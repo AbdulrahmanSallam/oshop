@@ -14,6 +14,17 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularFireModule } from '@angular/fire/compat';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyCx0XT9h0wtZX1aHYXDxTPPoDpXYJPUMN4',
+  authDomain: 'oshop-82008.firebaseapp.com',
+  projectId: 'oshop-82008',
+  storageBucket: 'oshop-82008.firebasestorage.app',
+  messagingSenderId: '802148367215',
+  appId: '1:802148367215:web:3798e608a364c24a0c869a',
+  measurementId: 'G-WT9VSTQ241',
+};
 
 @NgModule({
   declarations: [
@@ -29,7 +40,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HomeComponent,
     LoginComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, NgbModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
