@@ -18,7 +18,7 @@
         <a class="nav-link" routerLink="/shopping-cart">Shopping cart</a>
       </li>
 
-      <li class="nav-item dropdown" ngbDropdown>
+      <li class="nav-item dropdown" *ngIf="user" ngbDropdown>
         <a
           ngbDropdownToggle
           class="nav-link dropdown-toggle"
@@ -28,7 +28,7 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Username
+          {{ user.displayName }}
         </a>
         <div
           ngbDropdownMenu
@@ -45,11 +45,13 @@
             >Manage products</a
           >
           <div class="dropdown-divider"></div>
-          <a ngbDropdownItem class="dropdown-item">Log out</a>
+          <a ngbDropdownItem class="dropdown-item" (click)="logout()"
+            >Log out</a
+          >
         </div>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!user">
         <a class="nav-link" routerLink="/login">Login</a>
       </li>
     </ul>

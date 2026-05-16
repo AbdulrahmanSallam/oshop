@@ -8,11 +8,9 @@ import firebase from 'firebase/compat/app';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  fireAuth = inject(AngularFireAuth);
+  afAuth = inject(AngularFireAuth);
 
   login() {
-    return this.fireAuth.signInWithRedirect(
-      new firebase.auth.GoogleAuthProvider(),
-    );
+    return this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
 }
