@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -8,9 +9,9 @@ import firebase from 'firebase/compat/app';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  afAuth = inject(AngularFireAuth);
+  authService = inject(AuthService);
 
   login() {
-    return this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    this.authService.login();
   }
 }

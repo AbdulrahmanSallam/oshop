@@ -18,7 +18,11 @@
         <a class="nav-link" routerLink="/shopping-cart">Shopping cart</a>
       </li>
 
-      <li class="nav-item dropdown" *ngIf="user" ngbDropdown>
+      <li
+        *ngIf="authService.user$ | async as user; else anonymousUser"
+        ngbDropdown
+        class="nav-item dropdown"
+      >
         <a
           ngbDropdownToggle
           class="nav-link dropdown-toggle"
@@ -51,9 +55,11 @@
         </div>
       </li>
 
-      <li class="nav-item" *ngIf="!user">
-        <a class="nav-link" routerLink="/login">Login</a>
-      </li>
+      <ng-template #anonymousUser>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+      </ng-template>
     </ul>
   </div>
 </nav>

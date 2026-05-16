@@ -15,6 +15,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFireModule } from '@angular/fire/compat';
+import { AsyncPipe } from '@angular/common';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCx0XT9h0wtZX1aHYXDxTPPoDpXYJPUMN4',
@@ -46,7 +47,7 @@ const firebaseConfig = {
     NgbModule,
     AngularFireModule.initializeApp(firebaseConfig),
   ],
-  providers: [],
+  providers: [AsyncPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
