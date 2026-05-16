@@ -14,17 +14,23 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngularFireModule } from '@angular/fire/compat';
 import { AsyncPipe } from '@angular/common';
 
+// Firebase modular
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideDatabase, getDatabase } from '@angular/fire/database';
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyCx0XT9h0wtZX1aHYXDxTPPoDpXYJPUMN4',
-  authDomain: 'oshop-82008.firebaseapp.com',
-  projectId: 'oshop-82008',
-  storageBucket: 'oshop-82008.firebasestorage.app',
-  messagingSenderId: '802148367215',
-  appId: '1:802148367215:web:3798e608a364c24a0c869a',
-  measurementId: 'G-WT9VSTQ241',
+  apiKey: 'AIzaSyDCEZ1rJ-aN0WSsrjPBzFmADvcmBKRtQ7g',
+  authDomain: 'oshop-f3a4f.firebaseapp.com',
+  databaseURL:
+    'https://oshop-f3a4f-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'oshop-f3a4f',
+  storageBucket: 'oshop-f3a4f.firebasestorage.app',
+  messagingSenderId: '336245735473',
+  appId: '1:336245735473:web:f11412ac1abb4bbeed9510',
+  measurementId: 'G-QVHWVTZ493',
 };
 
 @NgModule({
@@ -45,7 +51,9 @@ const firebaseConfig = {
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideAuth(() => getAuth()),
+    provideDatabase(() => getDatabase()),
   ],
   providers: [AsyncPipe],
   bootstrap: [AppComponent],
