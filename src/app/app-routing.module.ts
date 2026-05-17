@@ -9,6 +9,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
 import { authGuard } from './guards/auth.guard';
+import { adminAuthGuard } from './guards/admin-auth.guard';
+import { MyOrdersComponent } from './pages/my-orders/my-orders.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,16 +28,21 @@ const routes: Routes = [
     component: OrderSuccessComponent,
     canActivate: [authGuard],
   },
+  {
+    path: 'order-succes',
+    component: MyOrdersComponent,
+    canActivate: [authGuard],
+  },
   // admin
   {
     path: 'admin/products',
     component: AdminProductsComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, adminAuthGuard],
   },
   {
     path: 'admin/orders',
     component: AdminOrdersComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, adminAuthGuard],
   },
 ];
 
