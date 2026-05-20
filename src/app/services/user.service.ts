@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Database, ref, update, get, onValue } from '@angular/fire/database';
 import { User } from 'firebase/auth';
 import { from, map, Observable, of } from 'rxjs';
-import { AppUser } from 'src/models/app-user';
+import { AppUser } from 'src/app/models/app-user';
 
 @Injectable({
   providedIn: 'root',

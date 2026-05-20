@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AuthService } from 'src/app/services/auth.service';
-import { AppUser } from 'src/models/app-user';
+import { AppUser } from 'src/app/models/app-user';
 @Component({
   selector: 'bs-navbar',
   templateUrl: './bs-navbar.component.html',

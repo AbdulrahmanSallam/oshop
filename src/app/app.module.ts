@@ -20,6 +20,8 @@ import { AsyncPipe } from '@angular/common';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
+import { ProductFormComponent } from './admin/components/product-form/product-form.component';
+import { FormsModule } from '@angular/forms';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDCEZ1rJ-aN0WSsrjPBzFmADvcmBKRtQ7g',
@@ -46,6 +48,7 @@ const firebaseConfig = {
     AdminOrdersComponent,
     HomeComponent,
     LoginComponent,
+    ProductFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ const firebaseConfig = {
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
+    FormsModule,
   ],
   providers: [AsyncPipe],
   bootstrap: [AppComponent],
