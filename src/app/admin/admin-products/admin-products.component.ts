@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { ADTSettings } from 'angular-datatables/src/models/settings';
 import { Subject, takeUntil } from 'rxjs';
 import { Product, ProductService } from 'src/app/services/product.service';
 
@@ -10,25 +11,59 @@ import { Product, ProductService } from 'src/app/services/product.service';
 export class AdminProductsComponent {
   productService = inject(ProductService);
   products: Product[] = [];
-  filteredProducts: Product[] = [];
   destroy$ = new Subject<void>();
 
+  dtOptions: ADTSettings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+      columns: [
+        {
+          title: 'Title',
+          data: 'name',
+          width: '20%',
+          className: 'text-center',
+        },
+        {
+          title: 'Price',
+          data: 'price',
+          width: '20%',
+          className: 'text-center',
+        },
+        {
+          title: 'Category',
+          data: 'category',
+          width: '20%',
+          className: 'text-center',
+        },
+        {
+          title: '',
+          orderable: false,
+          searchable: false,
+          width: '20%',
+          className: 'text-center',
+        },
+        {
+          title: '',
+          orderable: false,
+          searchable: false,
+          width: '20%',
+          className: 'text-center',
+        },
+      ],
+    };
+
     this.productService
       .getAll()
       .pipe(takeUntil(this.destroy$))
       .subscribe((products) => {
-        this.filteredProducts = this.products = products;
+        this.products = products;
+        this.dtTrigger.next(null);
       });
-  }
-
-  filter(query: string) {
-    console.log(this.filteredProducts);
-    this.filteredProducts = query
-      ? this.products.filter((product) =>
-          product.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
-        )
-      : this.products;
   }
 
   delete(id: string) {
