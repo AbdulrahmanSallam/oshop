@@ -21,7 +21,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { ProductFormComponent } from './admin/components/product-form/product-form.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDCEZ1rJ-aN0WSsrjPBzFmADvcmBKRtQ7g',
@@ -58,6 +58,7 @@ const firebaseConfig = {
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [AsyncPipe],
   bootstrap: [AppComponent],

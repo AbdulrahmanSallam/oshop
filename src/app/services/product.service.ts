@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Database, push } from '@angular/fire/database';
 import { ref } from 'firebase/database';
+import { Observable } from 'rxjs';
 
 export interface Product {
   name: string;
@@ -19,6 +20,15 @@ export class ProductService {
   create(product: Product) {
     const productRef = ref(this.db, '/products/');
 
-    push(productRef, product);
+    return new Observable<void>((subscriber) => {
+      push(productRef, product)
+        .then(() => {
+          subscriber.next();
+          subscriber.complete();
+        })
+        .catch((error) => {
+          subscriber.error(error);
+        });
+    });
   }
 }
