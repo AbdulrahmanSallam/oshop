@@ -3,6 +3,16 @@
     New product
   </button>
 
+  <div class="mt-4">
+    <input
+      #searchInp
+      type="text"
+      (keyup)="filter(searchInp.value)"
+      placeholder="search..."
+      class="form-control"
+    />
+  </div>
+
   <!-- table -->
   <table class="table text-center">
     <thead>
@@ -13,7 +23,7 @@
       <th></th>
     </thead>
     <tbody>
-      <tr *ngFor="let product of products">
+      <tr *ngFor="let product of filteredProducts">
         <td>{{ product.name }}</td>
         <td>{{ product.price | currency: "USD" : "symbol" }}</td>
         <td>{{ product.category }}</td>

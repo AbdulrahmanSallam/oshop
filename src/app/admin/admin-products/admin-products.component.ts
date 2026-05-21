@@ -10,6 +10,7 @@ import { Product, ProductService } from 'src/app/services/product.service';
 export class AdminProductsComponent {
   productService = inject(ProductService);
   products: Product[] = [];
+  filteredProducts: Product[] = [];
   destroy$ = new Subject<void>();
 
   ngOnInit(): void {
@@ -17,8 +18,17 @@ export class AdminProductsComponent {
       .getAll()
       .pipe(takeUntil(this.destroy$))
       .subscribe((products) => {
-        this.products = products;
+        this.filteredProducts = this.products = products;
       });
+  }
+
+  filter(query: string) {
+    console.log(this.filteredProducts);
+    this.filteredProducts = query
+      ? this.products.filter((product) =>
+          product.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+        )
+      : this.products;
   }
 
   delete(id: string) {
