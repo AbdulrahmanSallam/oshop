@@ -14,7 +14,7 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 
 // Firebase modular
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -22,6 +22,7 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { ProductFormComponent } from './admin/components/product-form/product-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DataTablesModule } from 'angular-datatables';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDCEZ1rJ-aN0WSsrjPBzFmADvcmBKRtQ7g',
@@ -59,8 +60,9 @@ const firebaseConfig = {
     provideDatabase(() => getDatabase()),
     FormsModule,
     ReactiveFormsModule,
+    DataTablesModule,
   ],
-  providers: [AsyncPipe],
+  providers: [AsyncPipe, CurrencyPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

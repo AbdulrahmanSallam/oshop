@@ -6,8 +6,8 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, take, takeUntil } from 'rxjs';
 import { Category, CategoryService } from 'src/app/services/category.service';
 import { Product, ProductService } from 'src/app/services/product.service';
 
@@ -20,9 +20,10 @@ export class ProductFormComponent {
   categoryService = inject(CategoryService);
   productService = inject(ProductService);
   router = inject(Router);
-
-  private destroy$ = new Subject<void>();
-
+  activatedRoute = inject(ActivatedRoute);
+  id: string | null = null;
+  categories: Category[] = [];
+  product: Product | null = null;
   form = new FormGroup({
     name: new FormControl('', [Validators.required]),
     price: new FormControl(0, [Validators.required]),
@@ -37,10 +38,11 @@ export class ProductFormComponent {
       ),
     ]),
   });
-
-  categories: Category[] = [];
+  private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+
     this.categoryService
       .getCategories()
       .pipe(takeUntil(this.destroy$))
@@ -48,6 +50,22 @@ export class ProductFormComponent {
         this.categories = v;
         this.category.updateValueAndValidity();
       });
+
+    if (this.id) {
+      this.productService
+        .get(this.id)
+        .pipe(take(1))
+        .subscribe((product) => {
+          if (!product) return;
+          this.product = product;
+          this.fillForm(this.product);
+        });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   save() {
@@ -55,21 +73,33 @@ export class ProductFormComponent {
       this.form.markAllAsTouched();
       return;
     }
+    if (this.id) {
+      this.productService.update(this.id, this.form.value as Product);
+    } else {
+      this.productService.create(this.form.value as Product);
+    }
 
-    this.productService
-      .create(this.form.value as Product)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.router.navigate(['admin/products']);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+    this.router.navigate(['admin/products']);
   }
 
-  categoryValidator(control: AbstractControl): ValidationErrors | null {
+  reset() {
+    if (!this.product) {
+      this.form.reset();
+      return;
+    }
+    this.fillForm(this.product);
+  }
+
+  private fillForm(product: Product) {
+    this.form.patchValue({
+      name: product.name,
+      price: product.price,
+      category: product.category,
+      imageUrl: product.imageUrl,
+    });
+  }
+
+  private categoryValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
 
     const exists = this.categories.some(
@@ -93,10 +123,5 @@ export class ProductFormComponent {
 
   get imageUrl() {
     return this.form.controls.imageUrl;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -1,9 +1,17 @@
 import { inject, Injectable } from '@angular/core';
-import { Database, push } from '@angular/fire/database';
+import {
+  Database,
+  listVal,
+  objectVal,
+  push,
+  remove,
+  update,
+} from '@angular/fire/database';
 import { ref } from 'firebase/database';
 import { Observable } from 'rxjs';
 
 export interface Product {
+  key: string;
   name: string;
   price: number;
   category: string;
@@ -15,20 +23,30 @@ export interface Product {
 })
 export class ProductService {
   db = inject(Database);
+
   constructor() {}
 
   create(product: Product) {
     const productRef = ref(this.db, '/products/');
+    push(productRef, product);
+  }
 
-    return new Observable<void>((subscriber) => {
-      push(productRef, product)
-        .then(() => {
-          subscriber.next();
-          subscriber.complete();
-        })
-        .catch((error) => {
-          subscriber.error(error);
-        });
-    });
+  getAll(): Observable<Product[]> {
+    const productsRef = ref(this.db, '/products/');
+    return listVal(productsRef, { keyField: 'key' });
+  }
+  get(id: string): Observable<Product | null> {
+    const productRef = ref(this.db, `/products/${id}`);
+    return objectVal(productRef);
+  }
+
+  update(id: string, product: Product) {
+    const productRef = ref(this.db, `/products/${id}`);
+    update(productRef, product);
+  }
+
+  delete(id: string) {
+    const productRef = ref(this.db, `/products/${id}`);
+    remove(productRef);
   }
 }

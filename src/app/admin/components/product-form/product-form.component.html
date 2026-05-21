@@ -1,83 +1,112 @@
 <div class="container">
-  <form [formGroup]="form" (submit)="save()">
-    <div class="mb-4">
-      <label class="mb-1" for="name">Title</label>
-      <input
-        formControlName="name"
-        required
-        type="text"
-        name="name"
-        id="name"
-        class="form-control"
-      />
-      <div *ngIf="name.touched && name.invalid" class="alert alert-danger">
-        <div *ngIf="name.errors?.['required']">Title is required</div>
+  <div class="row">
+    <div class="col-md-6">
+      <form [formGroup]="form" (submit)="save()">
+        <div class="mb-4">
+          <label class="mb-1" for="name">Title</label>
+          <input
+            formControlName="name"
+            required
+            type="text"
+            name="name"
+            id="name"
+            class="form-control"
+          />
+          <div *ngIf="name.touched && name.invalid" class="alert alert-danger">
+            <div *ngIf="name.errors?.['required']">Title is required</div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="mb-1" for="price">Price</label>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input
+              formControlName="price"
+              required
+              type="number"
+              name="price"
+              id="price"
+              class="form-control"
+            />
+          </div>
+
+          <div
+            *ngIf="price.touched && price.invalid"
+            class="alert alert-danger"
+          >
+            <div *ngIf="price.errors?.['required']">Price is required</div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="mb-1" for="category">Category</label>
+          <select
+            formControlName="category"
+            required
+            name="category"
+            id="category"
+            class="form-select"
+          >
+            <option value=""></option>
+            <option *ngFor="let category of categories" [value]="category.key">
+              {{ category.name }}
+            </option>
+          </select>
+
+          <div
+            *ngIf="category.touched && category.invalid"
+            class="alert alert-danger"
+          >
+            <div *ngIf="category.errors?.['required']">
+              Category is required
+            </div>
+            <div *ngIf="category.errors?.['invalidCategory']">
+              Invalid category
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="mb-1" for="imageUrl">Image URL</label>
+          <input
+            formControlName="imageUrl"
+            type="text"
+            name="imageUrl"
+            id="imageUrl"
+            class="form-control"
+            required
+          />
+
+          <div
+            *ngIf="imageUrl.touched && imageUrl.invalid"
+            class="alert alert-danger"
+          >
+            <div *ngIf="imageUrl.errors?.['required']">
+              Image url is required
+            </div>
+            <div *ngIf="imageUrl.errors?.['pattern']">Image url is invalid</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary me-2">Save</button>
+        <button (click)="reset()" type="button" class="btn btn-warning">
+          Reset
+        </button>
+      </form>
+    </div>
+    <div class="col-md-5">
+      <div class="card">
+        <img class="card-img-top" [src]="imageUrl.value" [alt]="name.value" />
+        <div class="card-body">
+          <h2 class="card-title">
+            {{ name.value }}
+          </h2>
+          <p class="card-text">
+            {{ price.value }}
+          </p>
+        </div>
       </div>
     </div>
-
-    <div class="mb-4">
-      <label class="mb-1" for="price">Price</label>
-      <div class="input-group">
-        <span class="input-group-text">$</span>
-        <input
-          formControlName="price"
-          required
-          type="number"
-          name="price"
-          id="price"
-          class="form-control"
-        />
-      </div>
-
-      <div *ngIf="price.touched && price.invalid" class="alert alert-danger">
-        <div *ngIf="price.errors?.['required']">Price is required</div>
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <label class="mb-1" for="category">Category</label>
-      <select
-        formControlName="category"
-        required
-        name="category"
-        id="category"
-        class="form-select"
-      >
-        <option value=""></option>
-        <option *ngFor="let category of categories" [value]="category.key">
-          {{ category.name }}
-        </option>
-      </select>
-
-      <div
-        *ngIf="category.touched && category.invalid"
-        class="alert alert-danger"
-      >
-        <div *ngIf="category.errors?.['required']">Category is required</div>
-        <div *ngIf="category.errors?.['invalidCategory']">Invalid category</div>
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <label class="mb-1" for="imageUrl">Image URL</label>
-      <input
-        formControlName="imageUrl"
-        type="text"
-        name="imageUrl"
-        id="imageUrl"
-        class="form-control"
-        required
-      />
-
-      <div
-        *ngIf="imageUrl.touched && imageUrl.invalid"
-        class="alert alert-danger"
-      >
-        <div *ngIf="imageUrl.errors?.['required']">Image url is required</div>
-        <div *ngIf="imageUrl.errors?.['pattern']">Image url is invalid</div>
-      </div>
-    </div>
-
-    <button class="btn btn-primary">Save</button>
-  </form>
+  </div>
 </div>
