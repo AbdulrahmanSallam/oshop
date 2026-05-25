@@ -11,12 +11,10 @@ import { Product, ProductService } from 'src/app/services/product.service';
 })
 export class ProductsComponent {
   private productService = inject(ProductService);
-  private categoryService = inject(CategoryService);
   private activatedRoute = inject(ActivatedRoute);
 
   products: Product[] = [];
   filteredProducts: Product[] = [];
-  categories$ = this.categoryService.getAll();
 
   category = '';
 

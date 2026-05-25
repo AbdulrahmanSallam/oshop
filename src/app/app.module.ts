@@ -24,6 +24,7 @@ import { ProductFormComponent } from './admin/components/product-form/product-fo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ProductCardComponent } from './pages/products/product-card/product-card.component';
+import { ProductFilterComponent } from './pages/products/product-filter/product-filter.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDCEZ1rJ-aN0WSsrjPBzFmADvcmBKRtQ7g',
@@ -52,6 +53,7 @@ const firebaseConfig = {
     LoginComponent,
     ProductFormComponent,
     ProductCardComponent,
+    ProductFilterComponent,
   ],
   imports: [
     BrowserModule,
