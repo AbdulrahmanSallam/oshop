@@ -1,5 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { ProductService } from 'src/app/services/product.service';
+import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs';
+import { CategoryService } from 'src/app/services/category.service';
+import { Product, ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-products',
@@ -8,6 +11,33 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductsComponent {
   private productService = inject(ProductService);
+  private categoryService = inject(CategoryService);
+  private activatedRoute = inject(ActivatedRoute);
 
-  products$ = this.productService.getAll();
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+  categories$ = this.categoryService.getAll();
+
+  category = '';
+
+  ngOnInit(): void {
+    this.productService
+      .getAll()
+      .pipe(
+        switchMap((products) => {
+          this.products = products;
+          return this.activatedRoute.queryParamMap;
+        }),
+      )
+      .subscribe((param) => {
+        this.category = param.get('category') ?? '';
+        this.filteredProducts = this.category
+          ? this.products.filter(
+              (p) =>
+                p.category.toLocaleLowerCase() ===
+                this.category.toLocaleLowerCase(),
+            )
+          : this.products;
+      });
+  }
 }
