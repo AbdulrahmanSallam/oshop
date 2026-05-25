@@ -11,11 +11,11 @@ import { ref } from 'firebase/database';
 import { Observable } from 'rxjs';
 
 export interface Product {
-  key: string;
-  name: string;
-  price: number;
-  category: string;
-  imageUrl: string;
+  name: string | null;
+  price: number | null;
+  category: string | null;
+  imageUrl: string | null;
+  key?: string;
 }
 
 @Injectable({

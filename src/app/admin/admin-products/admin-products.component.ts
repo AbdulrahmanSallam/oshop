@@ -66,7 +66,8 @@ export class AdminProductsComponent {
       });
   }
 
-  delete(id: string) {
+  delete(id: string | undefined) {
+    if (!id) return;
     if (!confirm('Are you sure to Delete this product?')) {
       return;
     }

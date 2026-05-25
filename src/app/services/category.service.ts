@@ -16,7 +16,7 @@ export class CategoryService {
 
   constructor() {}
 
-  getCategories() {
+  getAll() {
     const categoryRef = ref(this.db, '/categories/');
     return listVal<Category>(categoryRef, {
       keyField: 'key',

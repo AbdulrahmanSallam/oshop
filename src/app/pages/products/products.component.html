@@ -12,7 +12,7 @@
         <a
           *ngFor="let c of categories$ | async"
           routerLink="/"
-          [queryParams]="{ category: c.name }"
+          [queryParams]="{ category: c.key }"
           class="list-group-item list-group-item-action"
           [class.active]="c.name === category"
           >{{ c.name }}</a
@@ -22,21 +22,7 @@
 
     <div class="col row">
       <div *ngFor="let product of filteredProducts" class="col-4">
-        <div class="card">
-          <img
-            class="card-img-top"
-            [src]="product.imageUrl"
-            [alt]="product.name"
-          />
-          <div class="card-body">
-            <h3 class="card-title">
-              {{ product.name }}
-            </h3>
-            <p class="card-text">
-              {{ product.price | currency: "USD" : "symbol" }}
-            </p>
-          </div>
-        </div>
+        <product-card [product]="product"></product-card>
       </div>
     </div>
   </div>

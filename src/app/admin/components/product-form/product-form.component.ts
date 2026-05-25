@@ -23,7 +23,7 @@ export class ProductFormComponent {
   activatedRoute = inject(ActivatedRoute);
   id: string | null = null;
   categories: Category[] = [];
-  product: Product | null = null;
+  product: Product = {} as Product;
   form = new FormGroup({
     name: new FormControl('', [Validators.required]),
     price: new FormControl(0, [Validators.required]),
@@ -44,7 +44,7 @@ export class ProductFormComponent {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
 
     this.categoryService
-      .getCategories()
+      .getAll()
       .pipe(takeUntil(this.destroy$))
       .subscribe((v) => {
         this.categories = v;
@@ -83,7 +83,7 @@ export class ProductFormComponent {
   }
 
   reset() {
-    if (!this.product) {
+    if (!this.id) {
       this.form.reset();
       return;
     }

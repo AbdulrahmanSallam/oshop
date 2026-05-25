@@ -32,11 +32,7 @@ export class ProductsComponent {
       .subscribe((param) => {
         this.category = param.get('category') ?? '';
         this.filteredProducts = this.category
-          ? this.products.filter(
-              (p) =>
-                p.category.toLocaleLowerCase() ===
-                this.category.toLocaleLowerCase(),
-            )
+          ? this.products.filter((p) => p.category === this.category)
           : this.products;
       });
   }

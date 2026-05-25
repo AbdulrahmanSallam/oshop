@@ -96,16 +96,8 @@
       </form>
     </div>
     <div class="col-md-5">
-      <div *ngIf="form.valid" class="card">
-        <img class="card-img-top" [src]="imageUrl.value" [alt]="name.value" />
-        <div class="card-body">
-          <h2 class="card-title">
-            {{ name.value }}
-          </h2>
-          <p class="card-text">
-            {{ price.value | currency: "USD" : "symbol" }}
-          </p>
-        </div>
+      <div *ngIf="form.valid">
+        <product-card [product]="form.getRawValue()"></product-card>
       </div>
     </div>
   </div>

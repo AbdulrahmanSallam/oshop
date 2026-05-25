@@ -23,6 +23,7 @@ import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { ProductFormComponent } from './admin/components/product-form/product-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
+import { ProductCardComponent } from './pages/products/product-card/product-card.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDCEZ1rJ-aN0WSsrjPBzFmADvcmBKRtQ7g',
@@ -50,6 +51,7 @@ const firebaseConfig = {
     HomeComponent,
     LoginComponent,
     ProductFormComponent,
+    ProductCardComponent,
   ],
   imports: [
     BrowserModule,
