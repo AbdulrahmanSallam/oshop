@@ -97,7 +97,10 @@
     </div>
     <div class="col-md-5">
       <div *ngIf="form.valid">
-        <product-card [product]="form.getRawValue()"></product-card>
+        <product-card
+          [product]="form.getRawValue()"
+          [show-actions]="false"
+        ></product-card>
       </div>
     </div>
   </div>

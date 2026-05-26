@@ -8,4 +8,9 @@
       {{ product.price | currency: "USD" : "symbol" }}
     </p>
   </div>
+  <div class="card-footer">
+    <button *ngIf="showActions" class="btn btn-primary w-100 rounded-0">
+      Add to cart
+    </button>
+  </div>
 </div>

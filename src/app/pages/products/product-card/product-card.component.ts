@@ -8,4 +8,5 @@ import { Product } from 'src/app/services/product.service';
 })
 export class ProductCardComponent {
   @Input('product') product!: Product;
+  @Input('show-actions') showActions!: boolean;
 }

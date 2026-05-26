@@ -1,12 +1,12 @@
 <div class="container pt-4">
   <div class="row">
-    <div class="col-2">
+    <div class="col-4 col-md-3 col-lg-2">
       <product-filter [category]="category"></product-filter>
     </div>
 
     <div class="col row">
       <div *ngFor="let product of filteredProducts" class="col-4">
-        <product-card [product]="product"></product-card>
+        <product-card [product]="product" [show-actions]="true"></product-card>
       </div>
     </div>
   </div>
