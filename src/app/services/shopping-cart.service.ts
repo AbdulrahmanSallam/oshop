@@ -3,25 +3,21 @@ import { Database, objectVal, push, remove } from '@angular/fire/database';
 import { ref, update } from 'firebase/database';
 import { Product } from './product.service';
 import { map, take } from 'rxjs';
+import { ShoppingCart, ShoppingCartData } from '../models/shopping-cart';
 
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
+export class ShoppingCartItem {
+  key!: string;
+  price!: number;
+  quantity!: number;
+  imageUrl!: string;
+  name!: string;
 
-export class ShoppingCart {
-  constructor(
-    public items: { [key: string]: CartItem },
-    public dateCreated: number,
-  ) {}
+  constructor(init?: Partial<ShoppingCartItem>) {
+    Object.assign(this, init);
+  }
 
-  get TotalItemCount() {
-    let count = 0;
-    for (let productId in this.items) {
-      count += this.items[productId].quantity;
-    }
-
-    return count;
+  get totalPrice() {
+    return this.price! * this.quantity;
   }
 }
 
@@ -30,73 +26,101 @@ export class ShoppingCart {
 })
 export class ShoppingCartService {
   private readonly CART_STORAGE_KEY = 'cartId';
-  private readonly CART_PATH = '/shopping-cart/';
+  private readonly CART_PATH = '/shopping-cart';
   private readonly db = inject(Database);
 
-  async getCart() {
-    const cartId = await this.getOrCreateCartId();
-    const cartRef = this.getCartRef(cartId);
-    return objectVal<ShoppingCart>(cartRef).pipe(
-      map((val) =>
-         new ShoppingCart(val.items, val.dateCreated)
-      ),
+  async getShoppingCart() {
+    const cartRef = await this.getShoppingCartRef();
+    return objectVal<ShoppingCartData | null>(cartRef).pipe(
+      map((shoppingCart) => {
+        if (shoppingCart) {
+          return new ShoppingCart(shoppingCart.dateCreated, shoppingCart.items);
+        }
+        return null;
+      }),
     );
   }
 
   async addToCart(product: Product) {
-    const cartId = await this.getOrCreateCartId();
-    const itemRef = this.getItemRef(cartId, product.key!);
+    // set cartId in local storage
+    await this.getOrCreateCartId();
 
-    let item$ = objectVal<CartItem | null>(itemRef);
+    const shoppingCartItemRef = await this.getShoppingCartItemRef(product.key!);
+    let item$ = objectVal<ShoppingCartItem | null>(shoppingCartItemRef);
 
-    item$.pipe(take(1)).subscribe((item) => {
-      if (!item) {
-        return update(itemRef, { product, quantity: 1 });
+    item$.pipe(take(1)).subscribe((shoppingCartItem) => {
+      if (!shoppingCartItem) {
+        return update(shoppingCartItemRef, {
+          name: product.name,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          quantity: 1,
+        });
       }
 
-      return update(itemRef, { quantity: item.quantity + 1 });
+      let shoppingItem = new ShoppingCartItem({
+        ...shoppingCartItem,
+        key: product.key!,
+      });
+
+      return this.updateQuantity(shoppingItem, 1);
     });
   }
 
   async removeFromCart(product: Product) {
-    const cartId = await this.getOrCreateCartId();
-    const itemRef = this.getItemRef(cartId, product.key!);
+    const cartItemRef = await this.getShoppingCartItemRef(product.key!);
+    return remove(cartItemRef);
+  }
 
-    let item$ = objectVal<CartItem | null>(itemRef);
+  async updateQuantity(shoppingCartItem: ShoppingCartItem, value: number) {
+    const newQuantity = shoppingCartItem.quantity + value;
+    const shoppingCartItemRef = await this.getShoppingCartItemRef(
+      shoppingCartItem.key,
+    );
 
-    item$.pipe(take(1)).subscribe((item) => {
-      if (!item) {
-        return;
-      }
+    // If quantity would be 0 or less, remove the item from cart
+    if (newQuantity <= 0) {
+      return remove(shoppingCartItemRef);
+    }
 
-      if (item.quantity === 1) {
-        return remove(itemRef);
-      }
-
-      return update(itemRef, { quantity: item.quantity - 1 });
+    // Otherwise update the quantity
+    return update(shoppingCartItemRef, {
+      quantity: newQuantity,
     });
   }
 
-  private async getOrCreateCartId() {
-    const cartId = localStorage.getItem(this.CART_STORAGE_KEY);
+  private async getOrCreateCartId(): Promise<string> {
+    let cartId = localStorage.getItem(this.CART_STORAGE_KEY);
 
-    if (cartId) return cartId;
+    if (cartId) {
+      const shoppingCartRef = ref(this.db, `${this.CART_PATH}/${cartId}`);
+      // Convert to promise for cleaner async handling
+      const value = await objectVal<ShoppingCartData | null>(shoppingCartRef)
+        .pipe(take(1))
+        .toPromise();
 
-    const shoppingCartsRef = ref(this.db, this.CART_PATH);
+      if (value) {
+        return cartId;
+      }
+    }
 
-    let result = await push(shoppingCartsRef, {
+    // Create new shopping cart
+    const shoppingCartBaseRef = ref(this.db, this.CART_PATH);
+    const result = await push(shoppingCartBaseRef, {
       dateCreated: new Date().getTime(),
     });
 
-    localStorage.setItem('cartId', result.key!);
-
+    localStorage.setItem(this.CART_STORAGE_KEY, result.key!);
     return result.key!;
   }
 
-  private getCartRef(cartId: string) {
-    return ref(this.db, `/shopping-cart/${cartId}`);
+  private async getShoppingCartRef() {
+    const cartId = localStorage.getItem(this.CART_STORAGE_KEY);
+    return ref(this.db, `${this.CART_PATH}/${cartId}`);
   }
-  private getItemRef(cartId: string, productId: string) {
-    return ref(this.db, `/shopping-cart/${cartId}/items/${productId}`);
+
+  private async getShoppingCartItemRef(cartItemId: string) {
+    const cartId = localStorage.getItem(this.CART_STORAGE_KEY);
+    return ref(this.db, `${this.CART_PATH}/${cartId}/items/${cartItemId}`);
   }
 }

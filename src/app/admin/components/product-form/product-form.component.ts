@@ -24,6 +24,7 @@ export class ProductFormComponent {
   id: string | null = null;
   categories: Category[] = [];
   product: Product = {} as Product;
+
   form = new FormGroup({
     name: new FormControl('', [Validators.required]),
     price: new FormControl(0, [Validators.required]),

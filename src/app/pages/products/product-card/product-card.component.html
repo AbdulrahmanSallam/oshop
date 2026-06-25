@@ -8,9 +8,10 @@
       {{ product.price | currency: "USD" : "symbol" }}
     </p>
   </div>
+
   <div *ngIf="showActions" class="card-footer">
     <button
-      *ngIf="!getQuantity(); else quantity"
+      *ngIf="!shoppingCartItem; else quantity"
       (click)="addToCart()"
       class="btn btn-primary w-100 rounded-0"
     >
@@ -18,15 +19,9 @@
     </button>
 
     <ng-template #quantity>
-      <div class="d-flex justify-content-between align-items-center">
-        <button (click)="removeFromCart()" class="btn btn-secondary">-</button>
-
-        <div class="text-center">
-          {{ getQuantity() }}
-        </div>
-
-        <button (click)="addToCart()" class="btn btn-secondary">+</button>
-      </div>
+      <product-quantity
+        [shopping-cart-item]="shoppingCartItem!"
+      ></product-quantity>
     </ng-template>
   </div>
 </div>

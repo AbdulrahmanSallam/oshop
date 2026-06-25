@@ -8,7 +8,7 @@
       <div *ngFor="let product of filteredProducts" class="col-4">
         <product-card
           [product]="product"
-          [cart]="cart"
+          [shoppingCart$]="shoppingCart$"
           [show-actions]="true"
         ></product-card>
       </div>

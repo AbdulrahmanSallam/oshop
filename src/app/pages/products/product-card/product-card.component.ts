@@ -1,7 +1,9 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { ShoppingCart } from 'src/app/models/shopping-cart';
 import { Product } from 'src/app/services/product.service';
 import {
-  ShoppingCart,
+  ShoppingCartItem,
   ShoppingCartService,
 } from 'src/app/services/shopping-cart.service';
 
@@ -10,25 +12,35 @@ import {
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.scss'],
 })
-export class ProductCardComponent {
+export class ProductCardComponent implements OnInit, OnDestroy {
   shoppingCartService = inject(ShoppingCartService);
 
-  @Input('product') product!: Product;
-  @Input('show-actions') showActions!: boolean;
-  @Input('cart') shoppingCart!: ShoppingCart;
+  @Input({ required: true, alias: 'product' }) product!: Product;
+  @Input({ required: true, alias: 'show-actions' }) showActions!: boolean;
+  @Input({ alias: 'shoppingCart$' })
+  shoppingCart$!: Observable<ShoppingCart | null>;
+
+  shoppingCartItem: ShoppingCartItem | null = null;
+  private destroy$ = new Subject<void>();
 
   addToCart() {
     this.shoppingCartService.addToCart(this.product);
   }
 
-  removeFromCart() {
-    this.shoppingCartService.removeFromCart(this.product);
+  ngOnInit(): void {
+    if (this.shoppingCart$) {
+      this.shoppingCart$.pipe(takeUntil(this.destroy$)).subscribe((cart) => {
+        if (cart) {
+          this.shoppingCartItem = cart.getItem(this.product.key!);
+        } else {
+          this.shoppingCartItem = null;
+        }
+      });
+    }
   }
 
-  getQuantity() {
-    if (!this.shoppingCart || !this.shoppingCart.items) return 0;
-
-    const item = this.shoppingCart.items[this.product.key!];
-    return item ? item.quantity : 0;
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

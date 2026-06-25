@@ -13,7 +13,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.authService.user$.subscribe((user) => {
-      if (!user) this.router.navigate(['/login']);
+      // if (!user) this.router.navigate(['/login']);
     });
   }
 }

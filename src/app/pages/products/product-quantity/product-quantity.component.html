@@ -1,0 +1,9 @@
+<div class="d-flex justify-content-between align-items-center">
+  <button (click)="updateQuantity(-1)" class="btn btn-secondary">-</button>
+
+  <div class="text-center">
+    {{ shoppingCartItem.quantity }}
+  </div>
+
+  <button (click)="updateQuantity(1)" class="btn btn-secondary">+</button>
+</div>
