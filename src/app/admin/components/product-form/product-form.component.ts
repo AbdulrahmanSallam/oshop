@@ -7,9 +7,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Product } from 'shared/models/Product';
 import { Subject, take, takeUntil } from 'rxjs';
-import { Category, CategoryService } from 'src/app/services/category.service';
-import { Product, ProductService } from 'src/app/services/product.service';
+import { CategoryService, Category } from 'shared/services/category.service';
+import { ProductService } from 'shared/services/product.service';
 
 @Component({
   selector: 'app-product-form',

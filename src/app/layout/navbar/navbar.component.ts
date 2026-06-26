@@ -6,12 +6,12 @@ import {
   OnDestroy,
   ElementRef,
 } from '@angular/core';
+import { ShoppingCartService } from 'shared/services/shopping-cart.service';
+import { ThemeService } from 'shared/services/theme.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { ShoppingCart } from 'src/app/models/shopping-cart';
-import { AppUser } from 'src/app/models/app-user';
-import { AuthService } from 'src/app/services/auth.service';
-import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
-import { ThemeService } from 'src/app/services/theme.service';
+import { AppUser } from 'shared/models/app-user';
+import { ShoppingCart } from 'shared/models/shopping-cart';
+import { AuthService } from 'shared/services/auth.service';
 
 @Component({
   selector: 'navbar',
