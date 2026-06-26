@@ -1,1 +1,40 @@
-<p>my-orders works!</p>
+<div class="my-orders">
+  <div class="my-orders__container">
+    <div class="my-orders__header">
+      <h1 class="my-orders__title">
+        <i class="fas fa-shopping-bag"></i>
+        My Orders
+      </h1>
+    </div>
+
+    <ng-container *ngIf="orders$ | async as orders; else loading">
+      <div class="my-orders__empty" *ngIf="orders.length === 0">
+        <div class="my-orders__empty-icon">
+          <i class="fas fa-box-open"></i>
+        </div>
+        <h2 class="my-orders__empty-title">No orders yet</h2>
+        <p class="my-orders__empty-text">
+          You haven't placed any orders. Start shopping!
+        </p>
+        <a routerLink="/products" class="my-orders__empty-btn">
+          <i class="fas fa-shopping-cart"></i>
+          Browse Products
+        </a>
+      </div>
+
+      <div class="my-orders__list" *ngIf="orders.length > 0">
+        <order-item *ngFor="let order of orders" [order]="order"></order-item>
+      </div>
+    </ng-container>
+
+    <ng-template #loading>
+      <div class="my-orders__skeleton" *ngFor="let i of [1, 2, 3]">
+        <div class="my-orders__skeleton-header"></div>
+        <div class="my-orders__skeleton-line"></div>
+        <div
+          class="my-orders__skeleton-line my-orders__skeleton-line--short"
+        ></div>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 
 // Third-party Libraries
 import { DataTablesModule } from 'angular-datatables';
@@ -41,6 +41,7 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { ProductFormComponent } from './admin/components/product-form/product-form.component';
 import { ShoppingCartSummaryComponent } from './pages/shopping-cart-summary/shopping-cart-summary.component';
 import { ShippingFromComponent } from './pages/shipping-from/shipping-from.component';
+import { OrderItemComponent } from './pages/order-item/order-item.component';
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -73,6 +74,7 @@ const firebaseConfig = {
     ProductFormComponent,
     ShoppingCartSummaryComponent,
     ShippingFromComponent,
+    OrderItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,7 +87,7 @@ const firebaseConfig = {
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
   ],
-  providers: [AsyncPipe, CurrencyPipe],
+  providers: [AsyncPipe, CurrencyPipe, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

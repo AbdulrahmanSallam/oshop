@@ -1,0 +1,45 @@
+.admin-orders {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-page), var(--bg-page-secondary));
+  padding: 32px 0;
+  transition: background-color 0.3s;
+
+  &__container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  &__header {
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    i {
+      color: var(--color-primary-500);
+    }
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 64px 0;
+    color: var(--text-muted);
+    font-size: 18px;
+    i {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 12px;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}

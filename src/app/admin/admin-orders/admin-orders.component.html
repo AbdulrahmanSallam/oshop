@@ -1,1 +1,25 @@
-<p>admin-orders works!</p>
+<div class="admin-orders">
+  <div class="admin-orders__container">
+    <div class="admin-orders__header">
+      <h1 class="admin-orders__title">
+        <i class="fas fa-clipboard-list"></i>
+        Manage Orders
+      </h1>
+    </div>
+
+    <ng-container *ngIf="orders$ | async as orders">
+      <div class="admin-orders__empty" *ngIf="orders.length === 0">
+        <i class="fas fa-inbox"></i>
+        <p>No orders found</p>
+      </div>
+
+      <div class="admin-orders__list" *ngIf="orders.length > 0">
+        <order-item
+          *ngFor="let order of orders"
+          [order]="order"
+          [showUser]="true"
+        ></order-item>
+      </div>
+    </ng-container>
+  </div>
+</div>

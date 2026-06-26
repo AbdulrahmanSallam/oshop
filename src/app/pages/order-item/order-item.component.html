@@ -1,0 +1,55 @@
+<div class="order-item">
+  <div class="order-item__header" (click)="toggle()">
+    <div class="order-item__info">
+      <span class="order-item__id">#{{ order.key?.slice(-6) }}</span>
+      <span class="order-item__date">
+        <i class="far fa-calendar-alt"></i>
+        {{ order.datePlaced | date: "mediumDate" }}
+      </span>
+    </div>
+    <div class="order-item__meta">
+      <span class="order-item__user" *ngIf="showUser">{{
+        order.shipping.name
+      }}</span>
+      <span class="order-item__count">{{ order.items.length }} items</span>
+      <span class="order-item__total">{{
+        getTotal() | currency: "USD" : "symbol"
+      }}</span>
+      <i
+        class="fas order-item__icon"
+        [class.fa-chevron-down]="!isOpen"
+        [class.fa-chevron-up]="isOpen"
+      ></i>
+    </div>
+  </div>
+
+  <div class="order-item__body" *ngIf="isOpen">
+    <div class="order-item__shipping">
+      <h4><i class="fas fa-truck"></i> Shipping Details</h4>
+      <p>{{ order.shipping.name }}</p>
+      <p>{{ order.shipping.address }}</p>
+      <p>{{ order.shipping.city }}</p>
+    </div>
+
+    <div class="order-item__products">
+      <h4><i class="fas fa-box"></i> Items</h4>
+      <div class="order-item__product" *ngFor="let item of order.items">
+        <img
+          [src]="item.proudct.imageUrl"
+          [alt]="item.proudct.name"
+          class="order-item__product-image"
+        />
+        <div class="order-item__product-details">
+          <p class="order-item__product-name">{{ item.proudct.name }}</p>
+          <p class="order-item__product-meta">
+            {{ item.quantity }}x ·
+            {{ item.proudct.price | currency: "USD" : "symbol" }}
+          </p>
+        </div>
+        <span class="order-item__product-price">{{
+          item.totalPrice | currency: "USD" : "symbol"
+        }}</span>
+      </div>
+    </div>
+  </div>
+</div>
