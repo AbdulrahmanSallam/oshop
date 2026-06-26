@@ -23,7 +23,6 @@
     "@popperjs/core": "^2.11.6",
     "angular-datatables": "^16.0.1",
     "datatables.net": "^1.11.3",
-    "datatables.net-bs5": "^1.11.3",
     "firebase": "^10.5.0",
     "jquery": "^3.6.0",
     "rxjs": "~7.8.0",

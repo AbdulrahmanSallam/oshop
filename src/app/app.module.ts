@@ -39,6 +39,8 @@ import { ProductQuantityComponent } from './pages/products/product-quantity/prod
 import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
 import { ProductFormComponent } from './admin/components/product-form/product-form.component';
+import { ShoppingCartSummaryComponent } from './pages/shopping-cart-summary/shopping-cart-summary.component';
+import { ShippingFromComponent } from './pages/shipping-from/shipping-from.component';
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -69,6 +71,8 @@ const firebaseConfig = {
     AdminProductsComponent,
     AdminOrdersComponent,
     ProductFormComponent,
+    ShoppingCartSummaryComponent,
+    ShippingFromComponent,
   ],
   imports: [
     BrowserModule,

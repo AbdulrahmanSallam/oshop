@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { ADTSettings } from 'angular-datatables/src/models/settings';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Product, ProductService } from 'src/app/services/product.service';
 
@@ -8,53 +7,38 @@ import { Product, ProductService } from 'src/app/services/product.service';
   templateUrl: './admin-products.component.html',
   styleUrls: ['./admin-products.component.scss'],
 })
-export class AdminProductsComponent {
-  productService = inject(ProductService);
-  products: Product[] = [];
-  destroy$ = new Subject<void>();
+export class AdminProductsComponent implements OnInit, OnDestroy {
+  private readonly productService = inject(ProductService);
+  private readonly destroy$ = new Subject<void>();
 
-  dtOptions: ADTSettings = {};
+  products: Product[] = [];
+  dtOptions: any = {};
   dtTrigger: Subject<any> = new Subject<any>();
+
+  // Modal state
+  showDeleteModal = false;
+  productToDelete: Product | null = null;
 
   ngOnInit(): void {
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
-      processing: true,
-      columns: [
-        {
-          title: 'Title',
-          data: 'name',
-          width: '20%',
-          className: 'text-center',
+      lengthMenu: [10, 25, 50, 100],
+      language: {
+        search: '_INPUT_',
+        searchPlaceholder: 'Search products...',
+        lengthMenu: 'Show _MENU_',
+        info: 'Showing _START_ to _END_ of _TOTAL_',
+        infoEmpty: 'No products',
+        zeroRecords: 'No matching products',
+        paginate: {
+          first: '<i class="fas fa-angle-double-left"></i>',
+          last: '<i class="fas fa-angle-double-right"></i>',
+          previous: '<i class="fas fa-angle-left"></i>',
+          next: '<i class="fas fa-angle-right"></i>',
         },
-        {
-          title: 'Price',
-          data: 'price',
-          width: '20%',
-          className: 'text-center',
-        },
-        {
-          title: 'Category',
-          data: 'category',
-          width: '20%',
-          className: 'text-center',
-        },
-        {
-          title: '',
-          orderable: false,
-          searchable: false,
-          width: '20%',
-          className: 'text-center',
-        },
-        {
-          title: '',
-          orderable: false,
-          searchable: false,
-          width: '20%',
-          className: 'text-center',
-        },
-      ],
+      },
+      dom: '<"flex justify-between items-center mb-4 gap-4 flex-wrap"lf>rt<"flex justify-between items-center mt-4 gap-4 flex-wrap"ip>',
     };
 
     this.productService
@@ -66,17 +50,29 @@ export class AdminProductsComponent {
       });
   }
 
-  delete(id: string | undefined) {
-    if (!id) return;
-    if (!confirm('Are you sure to Delete this product?')) {
-      return;
-    }
+  confirmDelete(product: Product): void {
+    this.productToDelete = product;
+    this.showDeleteModal = true;
+  }
 
-    this.productService.delete(id);
+  cancelDelete(): void {
+    this.showDeleteModal = false;
+    this.productToDelete = null;
+  }
+
+  deleteProduct(): void {
+    if (!this.productToDelete?.key) return;
+
+    this.productService.delete(this.productToDelete.key);
+    this.products = this.products.filter(
+      (p) => p.key !== this.productToDelete?.key,
+    );
+    this.cancelDelete();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.dtTrigger.unsubscribe();
   }
 }

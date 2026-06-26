@@ -1,47 +1,100 @@
-<div class="admintProducts container py-5">
-  <button class="btn btn-primary" routerLink="/admin/products/new">
-    New product
-  </button>
+<div class="admin-products">
+  <div class="admin-products__container">
+    <div class="admin-products__header">
+      <div>
+        <h1 class="admin-products__title">
+          <i class="fas fa-box"></i>
+          Manage Products
+        </h1>
+        <p class="admin-products__subtitle">
+          {{ products.length }} products total
+        </p>
+      </div>
+      <a routerLink="/admin/products/new" class="admin-products__add-btn">
+        <i class="fas fa-plus"></i>
+        New Product
+      </a>
+    </div>
 
-  <div class="mt-4">
-    <table
-      datatable
-      [dtOptions]="dtOptions"
-      [dtTrigger]="dtTrigger"
-      class="row-border hover w-100"
-    >
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Price</th>
-          <th>Category</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let product of products">
-          <td>{{ product.name }}</td>
-          <td>{{ product.price }}</td>
-          <td>{{ product.category }}</td>
-          <td>
-            <a
-              [routerLink]="['/admin/products/', product.key]"
-              class="btn btn-primary"
-              >Edit</a
-            >
-          </td>
-          <td>
-            <button
-              (click)="delete(product.key)"
-              type="button"
-              class="btn btn-danger"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="admin-products__table-card">
+      <table
+        datatable
+        [dtOptions]="dtOptions"
+        [dtTrigger]="dtTrigger"
+        class="admin-products__table"
+      >
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products">
+            <td>
+              <div class="admin-products__product">
+                <img
+                  [src]="product.imageUrl"
+                  [alt]="product.name"
+                  class="admin-products__product-image"
+                  onerror="this.style.display = 'none'"
+                />
+                <span>{{ product.name }}</span>
+              </div>
+            </td>
+            <td>{{ product.price | currency: "USD" : "symbol" }}</td>
+            <td>
+              <span class="admin-products__badge">{{ product.category }}</span>
+            </td>
+            <td>
+              <div class="admin-products__actions">
+                <a
+                  [routerLink]="['/admin/products/', product.key]"
+                  class="admin-products__btn admin-products__btn--edit"
+                >
+                  <i class="fas fa-edit"></i>
+                </a>
+                <button
+                  (click)="confirmDelete(product)"
+                  class="admin-products__btn admin-products__btn--delete"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal" [class.modal--open]="showDeleteModal">
+    <div class="modal__overlay" (click)="cancelDelete()"></div>
+    <div class="modal__content">
+      <div class="modal__icon-wrapper">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="modal__title">Delete Product</h3>
+      <p class="modal__message">
+        Are you sure you want to delete
+        <strong>{{ productToDelete?.name }}</strong
+        >? This action cannot be undone.
+      </p>
+      <div class="modal__actions">
+        <button class="modal__btn modal__btn--cancel" (click)="cancelDelete()">
+          Cancel
+        </button>
+        <button
+          class="modal__btn modal__btn--confirm"
+          (click)="deleteProduct()"
+        >
+          <i class="fas fa-trash"></i>
+          Delete
+        </button>
+      </div>
+    </div>
   </div>
 </div>

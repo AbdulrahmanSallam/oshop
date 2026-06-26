@@ -1,6 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import firebase from 'firebase/compat/app';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -10,8 +8,13 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent {
   authService = inject(AuthService);
+  isLoading = false;
 
   login() {
+    this.isLoading = true;
     this.authService.login();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 3000);
   }
 }

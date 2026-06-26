@@ -50,29 +50,40 @@ export class NavbarComponent implements OnInit, OnDestroy {
     document.body.style.overflow = '';
   }
 
-  @HostListener('window:scroll') onWindowScroll() {
+  @HostListener('window:scroll')
+  onWindowScroll() {
     this.isScrolled = window.scrollY > 10;
   }
-  @HostListener('window:resize') onWindowResize() {
-    if (window.innerWidth >= 1024 && this.isMobileMenuOpen)
+
+  @HostListener('window:resize')
+  onWindowResize() {
+    if (window.innerWidth >= 1024 && this.isMobileMenuOpen) {
       this.closeMobileMenu();
+    }
   }
 
   onDocumentClick(event: Event) {
     if (
       this.isDropdownOpen &&
       !this.elementRef.nativeElement.contains(event.target)
-    )
+    ) {
       this.isDropdownOpen = false;
+    }
     if (
       this.isMobileDropdownOpen &&
       !this.elementRef.nativeElement.contains(event.target)
-    )
+    ) {
       this.isMobileDropdownOpen = false;
+    }
   }
 
   toggleTheme() {
     this.themeService.toggleTheme();
+  }
+
+  login() {
+    this.closeMobileMenu();
+    this.authService.login();
   }
 
   toggleMobileMenu() {
@@ -80,25 +91,31 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isMobileDropdownOpen = false;
     document.body.style.overflow = this.isMobileMenuOpen ? 'hidden' : '';
   }
+
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
     document.body.style.overflow = '';
   }
+
   toggleDropdown(event: Event) {
     event.stopPropagation();
     this.isDropdownOpen = !this.isDropdownOpen;
   }
+
   closeDropdown() {
     this.isDropdownOpen = false;
   }
+
   toggleMobileDropdown(event: Event) {
     event.stopPropagation();
     this.isMobileDropdownOpen = !this.isMobileDropdownOpen;
     this.isMobileMenuOpen = false;
   }
+
   closeMobileDropdown() {
     this.isMobileDropdownOpen = false;
   }
+
   logout() {
     this.closeMobileMenu();
     this.closeDropdown();

@@ -2,9 +2,9 @@
   <div class="navbar__container">
     <div class="navbar__left">
       <a routerLink="/" class="navbar__logo">O</a>
-      <a routerLink="/" class="navbar__home-link"
-        ><i class="fas fa-home"></i><span>Home</span></a
-      >
+      <a routerLink="/" class="navbar__home-link">
+        <i class="fas fa-home"></i><span>Home</span>
+      </a>
     </div>
 
     <div class="navbar__nav">
@@ -20,11 +20,12 @@
       <a routerLink="/shopping-cart" class="navbar__link">
         <i class="fas fa-shopping-cart"></i>
         <span class="navbar__link-text">Cart</span>
-        <span *ngIf="cart$ | async as cart" class="navbar__badge">{{
-          cart.totalItemCount > 99 ? "99+" : cart.totalItemCount
-        }}</span>
+        <span *ngIf="cart$ | async as cart" class="navbar__badge">
+          {{ cart.totalItemCount > 99 ? "99+" : cart.totalItemCount }}
+        </span>
       </a>
 
+      <!-- User Menu / Login Button -->
       <ng-container *ngIf="appUser; else desktopLogin">
         <div class="navbar__dropdown" (click)="toggleDropdown($event)">
           <button class="navbar__dropdown-toggle">
@@ -53,8 +54,9 @@
               routerLink="/my-orders"
               class="navbar__dropdown-item"
               (click)="closeDropdown()"
-              ><i class="fas fa-shopping-bag"></i><span>My Orders</span></a
             >
+              <i class="fas fa-shopping-bag"></i><span>My Orders</span>
+            </a>
             <ng-container *ngIf="appUser.isAdmin">
               <div class="navbar__dropdown-divider"></div>
               <div class="navbar__dropdown-section-title">Admin</div>
@@ -62,15 +64,16 @@
                 routerLink="/admin/orders"
                 class="navbar__dropdown-item"
                 (click)="closeDropdown()"
-                ><i class="fas fa-clipboard-list"></i
-                ><span>Manage Orders</span></a
               >
+                <i class="fas fa-clipboard-list"></i><span>Manage Orders</span>
+              </a>
               <a
                 routerLink="/admin/products"
                 class="navbar__dropdown-item"
                 (click)="closeDropdown()"
-                ><i class="fas fa-box"></i><span>Manage Products</span></a
               >
+                <i class="fas fa-box"></i><span>Manage Products</span>
+              </a>
             </ng-container>
             <div class="navbar__dropdown-divider"></div>
             <button
@@ -82,20 +85,24 @@
           </div>
         </div>
       </ng-container>
+
       <ng-template #desktopLogin>
-        <a routerLink="/login" class="navbar__btn"
-          ><i class="fas fa-sign-in-alt"></i><span>Login</span></a
-        >
+        <button class="navbar__btn" (click)="login()">
+          <i class="fab fa-google"></i>
+          <span>Login with Google</span>
+        </button>
       </ng-template>
     </div>
 
+    <!-- Mobile Actions -->
     <div class="navbar__mobile-actions">
-      <a routerLink="/shopping-cart" class="navbar__mobile-icon"
-        ><i class="fas fa-shopping-cart"></i
-        ><span *ngIf="cart$ | async as cart" class="navbar__mobile-badge">{{
-          cart.totalItemCount > 9 ? "9+" : cart.totalItemCount
-        }}</span></a
-      >
+      <a routerLink="/shopping-cart" class="navbar__mobile-icon">
+        <i class="fas fa-shopping-cart"></i>
+        <span *ngIf="cart$ | async as cart" class="navbar__mobile-badge">
+          {{ cart.totalItemCount > 9 ? "9+" : cart.totalItemCount }}
+        </span>
+      </a>
+
       <ng-container *ngIf="appUser; else mobileLoginBtn">
         <div
           class="navbar__dropdown navbar__dropdown--mobile"
@@ -122,8 +129,9 @@
               routerLink="/my-orders"
               class="navbar__dropdown-item"
               (click)="closeMobileDropdown()"
-              ><i class="fas fa-shopping-bag"></i><span>My Orders</span></a
             >
+              <i class="fas fa-shopping-bag"></i><span>My Orders</span>
+            </a>
             <ng-container *ngIf="appUser.isAdmin">
               <div class="navbar__dropdown-divider"></div>
               <div class="navbar__dropdown-section-title">Admin</div>
@@ -131,15 +139,16 @@
                 routerLink="/admin/orders"
                 class="navbar__dropdown-item"
                 (click)="closeMobileDropdown()"
-                ><i class="fas fa-clipboard-list"></i
-                ><span>Manage Orders</span></a
               >
+                <i class="fas fa-clipboard-list"></i><span>Manage Orders</span>
+              </a>
               <a
                 routerLink="/admin/products"
                 class="navbar__dropdown-item"
                 (click)="closeMobileDropdown()"
-                ><i class="fas fa-box"></i><span>Manage Products</span></a
               >
+                <i class="fas fa-box"></i><span>Manage Products</span>
+              </a>
             </ng-container>
             <div class="navbar__dropdown-divider"></div>
             <button
@@ -151,10 +160,17 @@
           </div>
         </div>
       </ng-container>
-      <ng-template #mobileLoginBtn
-        ><a routerLink="/login" class="navbar__mobile-icon"
-          ><i class="fas fa-user-circle"></i></a
-      ></ng-template>
+
+      <ng-template #mobileLoginBtn>
+        <button
+          class="navbar__mobile-icon"
+          (click)="login()"
+          aria-label="Login with Google"
+        >
+          <i class="fab fa-google"></i>
+        </button>
+      </ng-template>
+
       <button
         class="navbar__toggle"
         (click)="toggleMobileMenu()"
@@ -163,18 +179,21 @@
         <span
           class="navbar__toggle-icon"
           [class.navbar__toggle-icon--open]="isMobileMenuOpen"
-          ><span></span><span></span><span></span
-        ></span>
+        >
+          <span></span><span></span><span></span>
+        </span>
       </button>
     </div>
   </div>
 
+  <!-- Overlay -->
   <div
     class="navbar__overlay"
     [class.navbar__overlay--visible]="isMobileMenuOpen"
     (click)="closeMobileMenu()"
   ></div>
 
+  <!-- Mobile Menu -->
   <div
     class="navbar__mobile-menu"
     [class.navbar__mobile-menu--open]="isMobileMenuOpen"
@@ -184,33 +203,34 @@
       <button (click)="closeMobileMenu()"><i class="fas fa-times"></i></button>
     </div>
     <div class="navbar__mobile-content">
-      <a routerLink="/" class="navbar__mobile-link" (click)="closeMobileMenu()"
-        ><i class="fas fa-home"></i><span>Home</span></a
-      >
+      <a routerLink="/" class="navbar__mobile-link" (click)="closeMobileMenu()">
+        <i class="fas fa-home"></i><span>Home</span>
+      </a>
       <a
         routerLink="/products"
         class="navbar__mobile-link"
         (click)="closeMobileMenu()"
-        ><i class="fas fa-th-large"></i><span>All Products</span></a
       >
+        <i class="fas fa-th-large"></i><span>All Products</span>
+      </a>
       <a
         routerLink="/shopping-cart"
         class="navbar__mobile-link"
         (click)="closeMobileMenu()"
-        ><i class="fas fa-shopping-cart"></i><span>Shopping Cart</span
-        ><span
-          *ngIf="cart$ | async as cart"
-          class="navbar__mobile-link-badge"
-          >{{ cart.totalItemCount }}</span
-        ></a
       >
+        <i class="fas fa-shopping-cart"></i><span>Shopping Cart</span>
+        <span *ngIf="cart$ | async as cart" class="navbar__mobile-link-badge">{{
+          cart.totalItemCount
+        }}</span>
+      </a>
       <div class="navbar__mobile-divider"></div>
       <a
         routerLink="/my-orders"
         class="navbar__mobile-link"
         (click)="closeMobileMenu()"
-        ><i class="fas fa-shopping-bag"></i><span>My Orders</span></a
       >
+        <i class="fas fa-shopping-bag"></i><span>My Orders</span>
+      </a>
       <ng-container *ngIf="appUser?.isAdmin">
         <div class="navbar__mobile-divider"></div>
         <div class="navbar__mobile-section-title">Admin</div>
@@ -218,22 +238,27 @@
           routerLink="/admin/orders"
           class="navbar__mobile-link"
           (click)="closeMobileMenu()"
-          ><i class="fas fa-clipboard-list"></i><span>Manage Orders</span></a
         >
+          <i class="fas fa-clipboard-list"></i><span>Manage Orders</span>
+        </a>
         <a
           routerLink="/admin/products"
           class="navbar__mobile-link"
           (click)="closeMobileMenu()"
-          ><i class="fas fa-box"></i><span>Manage Products</span></a
         >
+          <i class="fas fa-box"></i><span>Manage Products</span>
+        </a>
       </ng-container>
-      <!-- Theme Toggle in Mobile Menu -->
+
+      <!-- Theme Toggle -->
       <div class="navbar__mobile-divider"></div>
       <button (click)="toggleTheme()" class="navbar__mobile-link">
-        <i class="fas" [class.fa-moon]="!isDark" [class.fa-sun]="isDark"></i
-        ><span>{{ isDark ? "Light Mode" : "Dark Mode" }}</span>
+        <i class="fas" [class.fa-moon]="!isDark" [class.fa-sun]="isDark"></i>
+        <span>{{ isDark ? "Light Mode" : "Dark Mode" }}</span>
       </button>
-      <ng-container *ngIf="appUser; else mobileLoginSection">
+
+      <!-- Login/Logout for mobile menu -->
+      <ng-container *ngIf="appUser; else mobileMenuLogin">
         <div class="navbar__mobile-divider"></div>
         <button
           (click)="logout()"
@@ -242,14 +267,12 @@
           <i class="fas fa-sign-out-alt"></i><span>Log Out</span>
         </button>
       </ng-container>
-      <ng-template #mobileLoginSection>
+      <ng-template #mobileMenuLogin>
         <div class="navbar__mobile-divider"></div>
-        <a
-          routerLink="/login"
-          class="navbar__mobile-btn"
-          (click)="closeMobileMenu()"
-          ><i class="fas fa-sign-in-alt"></i><span>Login</span></a
-        >
+        <button (click)="login(); closeMobileMenu()" class="navbar__mobile-btn">
+          <i class="fab fa-google"></i>
+          <span>Login with Google</span>
+        </button>
       </ng-template>
     </div>
   </div>

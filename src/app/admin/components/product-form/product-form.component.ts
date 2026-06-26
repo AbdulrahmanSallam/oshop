@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -16,18 +16,20 @@ import { Product, ProductService } from 'src/app/services/product.service';
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss'],
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements OnInit, OnDestroy {
   categoryService = inject(CategoryService);
   productService = inject(ProductService);
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
+
   id: string | null = null;
   categories: Category[] = [];
   product: Product = {} as Product;
+  private destroy$ = new Subject<void>();
 
   form = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    price: new FormControl(0, [Validators.required]),
+    price: new FormControl(0, [Validators.required, Validators.min(0.01)]),
     category: new FormControl('', [
       Validators.required,
       (control: AbstractControl) => this.categoryValidator(control),
@@ -39,7 +41,6 @@ export class ProductFormComponent {
       ),
     ]),
   });
-  private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -47,8 +48,8 @@ export class ProductFormComponent {
     this.categoryService
       .getAll()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((v) => {
-        this.categories = v;
+      .subscribe((categories) => {
+        this.categories = categories;
         this.category.updateValueAndValidity();
       });
 
@@ -74,18 +75,21 @@ export class ProductFormComponent {
       this.form.markAllAsTouched();
       return;
     }
+
+    const productData = this.form.value as Product;
+
     if (this.id) {
-      this.productService.update(this.id, this.form.value as Product);
+      this.productService.update(this.id, productData);
     } else {
-      this.productService.create(this.form.value as Product);
+      this.productService.create(productData);
     }
 
-    this.router.navigate(['admin/products']);
+    this.router.navigate(['/admin/products']);
   }
 
   reset() {
     if (!this.id) {
-      this.form.reset();
+      this.form.reset({ price: 0 });
       return;
     }
     this.fillForm(this.product);
@@ -102,26 +106,21 @@ export class ProductFormComponent {
 
   private categoryValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
-
     const exists = this.categories.some(
       (category) => category.key === control.value,
     );
-
     return exists ? null : { invalidCategory: true };
   }
 
-  // helpers
   get name() {
     return this.form.controls.name;
   }
-
   get price() {
     return this.form.controls.price;
   }
   get category() {
     return this.form.controls.category;
   }
-
   get imageUrl() {
     return this.form.controls.imageUrl;
   }
