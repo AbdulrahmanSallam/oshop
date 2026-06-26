@@ -1,0 +1,47 @@
+<div class="summary">
+  <div class="summary__header">
+    <h2 class="summary__title">
+      <i class="fas fa-receipt"></i>
+      Order Summary
+    </h2>
+    <span class="summary__count">
+      {{ cart?.totalItemCount || 0 }}
+      {{ cart?.totalItemCount === 1 ? "item" : "items" }}
+    </span>
+  </div>
+
+  <div class="summary__items">
+    <div class="summary__item" *ngFor="let item of cart?.cartItems">
+      <div class="summary__item-info">
+        <img
+          [src]="item.imageUrl"
+          [alt]="item.name"
+          class="summary__item-image"
+          onerror="this.src = 'assets/no-image.png'"
+        />
+        <div class="summary__item-details">
+          <p class="summary__item-name">{{ item.name }}</p>
+          <p class="summary__item-quantity">
+            {{ item.quantity }}x ·
+            {{ item.price | currency: "USD" : "symbol" }} each
+          </p>
+        </div>
+      </div>
+      <span class="summary__item-price">
+        {{ item.totalPrice | currency: "USD" : "symbol" }}
+      </span>
+    </div>
+
+    <div class="summary__empty" *ngIf="!cart?.cartItems?.length">
+      <i class="fas fa-shopping-cart"></i>
+      <p>No items in cart</p>
+    </div>
+  </div>
+
+  <div class="summary__total">
+    <span class="summary__total-label">Total</span>
+    <span class="summary__total-price">
+      {{ cart?.totalPrice | currency: "USD" : "symbol" }}
+    </span>
+  </div>
+</div>

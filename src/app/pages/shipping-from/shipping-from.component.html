@@ -1,0 +1,101 @@
+<form
+  [formGroup]="shippingForm"
+  (ngSubmit)="handleSubmit()"
+  class="shipping-form"
+>
+  <div class="shipping-form__header">
+    <h2 class="shipping-form__title">
+      <i class="fas fa-truck"></i>
+      Shipping Details
+    </h2>
+    <p class="shipping-form__subtitle">Enter your shipping information</p>
+  </div>
+
+  <div class="shipping-form__fields">
+    <div class="shipping-form__field">
+      <label class="shipping-form__label" for="name">
+        <i class="fas fa-user"></i>
+        Full Name
+      </label>
+      <input
+        formControlName="name"
+        type="text"
+        id="name"
+        class="shipping-form__input"
+        [class.shipping-form__input--error]="
+          shippingForm.get('name')?.invalid && shippingForm.get('name')?.touched
+        "
+        placeholder="John Doe"
+      />
+      <span
+        class="shipping-form__error"
+        *ngIf="
+          shippingForm.get('name')?.invalid && shippingForm.get('name')?.touched
+        "
+      >
+        Name is required
+      </span>
+    </div>
+
+    <div class="shipping-form__field">
+      <label class="shipping-form__label" for="address">
+        <i class="fas fa-map-marker-alt"></i>
+        Address
+      </label>
+      <input
+        formControlName="address"
+        type="text"
+        id="address"
+        class="shipping-form__input"
+        [class.shipping-form__input--error]="
+          shippingForm.get('address')?.invalid &&
+          shippingForm.get('address')?.touched
+        "
+        placeholder="123 Main Street"
+      />
+      <span
+        class="shipping-form__error"
+        *ngIf="
+          shippingForm.get('address')?.invalid &&
+          shippingForm.get('address')?.touched
+        "
+      >
+        Address is required
+      </span>
+    </div>
+
+    <div class="shipping-form__field">
+      <label class="shipping-form__label" for="city">
+        <i class="fas fa-city"></i>
+        City
+      </label>
+      <input
+        formControlName="city"
+        type="text"
+        id="city"
+        class="shipping-form__input"
+        [class.shipping-form__input--error]="
+          shippingForm.get('city')?.invalid && shippingForm.get('city')?.touched
+        "
+        placeholder="New York"
+      />
+      <span
+        class="shipping-form__error"
+        *ngIf="
+          shippingForm.get('city')?.invalid && shippingForm.get('city')?.touched
+        "
+      >
+        City is required
+      </span>
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    class="shipping-form__submit"
+    [disabled]="shippingForm.invalid"
+  >
+    <i class="fas fa-lock"></i>
+    Place Order
+  </button>
+</form>

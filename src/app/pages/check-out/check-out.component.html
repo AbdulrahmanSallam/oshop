@@ -1,20 +1,19 @@
 <div class="checkout">
-  <h1>Shipping</h1>
+  <div class="checkout__container">
+    <h1 class="checkout__title">Checkout</h1>
 
-  <form [formGroup]="shippingForm" (submit)="handleSubmit()">
-    <div>
-      <label class="block" for="name">Name</label>
-      <input formControlName="name" type="text" name="name" />
-    </div>
-    <div>
-      <label class="block" for="address">Address</label>
-      <input formControlName="address" type="text" name="address" />
-    </div>
-    <div>
-      <label class="block" for="city">City</label>
-      <input formControlName="city" type="text" name="city" />
-    </div>
+    <ng-container *ngIf="cart$ | async as cart">
+      <div class="checkout__layout">
+        <!-- Shipping Form -->
+        <div class="checkout__form">
+          <shipping-from [cart]="cart"></shipping-from>
+        </div>
 
-    <button>Place order</button>
-  </form>
+        <!-- Order Summary -->
+        <div class="checkout__summary">
+          <shopping-cart-summary [cart]="cart"></shopping-cart-summary>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </div>

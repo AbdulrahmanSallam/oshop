@@ -1,0 +1,45 @@
+.checkout {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    var(--bg-page) 0%,
+    var(--bg-page-secondary) 100%
+  );
+  padding: 32px 0;
+  transition: background-color 0.3s ease;
+
+  &__container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  &__title {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 32px;
+  }
+
+  &__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+
+    @media (min-width: 768px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__form {
+    order: 1;
+  }
+
+  &__summary {
+    order: 2;
+
+    @media (min-width: 768px) {
+      order: 2;
+    }
+  }
+}
