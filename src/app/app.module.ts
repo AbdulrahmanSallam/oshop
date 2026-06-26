@@ -9,18 +9,10 @@ import { DataTablesModule } from 'angular-datatables';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CheckOutComponent } from './components/check-out/check-out.component';
-import { HomeComponent } from './components/home/home.component';
-import { MyOrdersComponent } from './components/my-orders/my-orders.component';
-import { OrderSuccessComponent } from './components/order-success/order-success.component';
-import { ProductFilterComponent } from './components/products/product-filter/product-filter.component';
-import { ProductsComponent } from './components/products/products.component';
-import { ShippingFromComponent } from './components/shipping-from/shipping-from.component';
-import { ShoppingCartSummaryComponent } from './components/shopping-cart-summary/shopping-cart-summary.component';
-import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
-import { NavbarComponent } from './layout/navbar/navbar.component';
+import { NavbarComponent } from './core/navbar/navbar.component';
 import { SharedModule } from 'shared/shared.module';
 import { AdminModule } from './admin/admin.module';
+import { ShoppingModule } from './shopping/shopping.module';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDCEZ1rJ-aN0WSsrjPBzFmADvcmBKRtQ7g',
@@ -35,25 +27,13 @@ const firebaseConfig = {
 };
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    HomeComponent,
-    ProductsComponent,
-    ShoppingCartComponent,
-    CheckOutComponent,
-    OrderSuccessComponent,
-    MyOrdersComponent,
-    ProductFilterComponent,
-    ShoppingCartSummaryComponent,
-    ShippingFromComponent,
-  ],
+  declarations: [AppComponent, NavbarComponent],
   imports: [
     BrowserModule,
     SharedModule,
     AdminModule,
+    ShoppingModule,
     BrowserAnimationsModule,
-    FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
     DataTablesModule,

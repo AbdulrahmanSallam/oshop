@@ -8,7 +8,6 @@ import { AuthService } from 'shared/services/auth.service';
 })
 export class AppComponent implements OnInit {
   authService = inject(AuthService);
-  currentYear = new Date().getFullYear();
 
   ngOnInit(): void {
     this.authService.user$.subscribe();

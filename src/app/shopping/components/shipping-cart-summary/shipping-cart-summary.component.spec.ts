@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShoppingCartSummaryComponent } from './shopping-cart-summary.component';
+import { ShippingCartSummaryComponent } from './shipping-cart-summary.component';
 
 describe('ShoppingCartSummaryComponent', () => {
-  let component: ShoppingCartSummaryComponent;
-  let fixture: ComponentFixture<ShoppingCartSummaryComponent>;
+  let component: ShippingCartSummaryComponent;
+  let fixture: ComponentFixture<ShippingCartSummaryComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ShoppingCartSummaryComponent]
+      declarations: [ShippingCartSummaryComponent],
     });
-    fixture = TestBed.createComponent(ShoppingCartSummaryComponent);
+    fixture = TestBed.createComponent(ShippingCartSummaryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
