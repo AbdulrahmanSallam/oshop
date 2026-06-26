@@ -1,5 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { Order, Shipping } from 'src/app/models/order';
 import { ShoppingCart } from 'src/app/models/shopping-cart';
@@ -16,7 +17,8 @@ export class CheckOutComponent implements OnInit, OnDestroy {
   private readonly ShoppingCartService = inject(ShoppingCartService);
   private readonly orderService = inject(OrderService);
   private readonly authsService = inject(AuthService);
-  private readonly subject: Subject<void> = new Subject();
+  private readonly router = inject(Router);
+  private readonly subject$: Subject<void> = new Subject();
   userId!: string;
 
   cart!: ShoppingCart | null;
@@ -29,20 +31,22 @@ export class CheckOutComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     let cart$ = await this.ShoppingCartService.getShoppingCart();
-    cart$.pipe(takeUntil(this.subject)).subscribe((cart) => (this.cart = cart));
+    cart$
+      .pipe(takeUntil(this.subject$))
+      .subscribe((cart) => (this.cart = cart));
     this.authsService.appUser$
-      .pipe(takeUntil(this.subject))
+      .pipe(takeUntil(this.subject$))
       .subscribe((user) => {
         if (user) this.userId = user._id;
       });
   }
 
   ngOnDestroy(): void {
-    this.subject.next();
-    this.subject.complete();
+    this.subject$.next();
+    this.subject$.complete();
   }
 
-  handleSubmit() {
+  async handleSubmit() {
     if (this.shippingForm.invalid) return;
 
     const formValue = this.shippingForm.value as {
@@ -52,7 +56,8 @@ export class CheckOutComponent implements OnInit, OnDestroy {
     };
 
     const order = new Order(this.userId, formValue as Shipping, this.cart!);
+    const result = await this.orderService.placeOrder(order);
 
-    this.orderService.storeOrder(order);
+    this.router.navigate(['/order-success', result.key]);
   }
 }
