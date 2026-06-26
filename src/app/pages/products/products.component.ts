@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { ShoppingCart } from 'src/app/models/shopping-cart';
 import { Product, ProductService } from 'src/app/services/product.service';
@@ -14,16 +14,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
   private readonly productService = inject(ProductService);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly shoppingCartService = inject(ShoppingCartService);
+  private readonly router = inject(Router);
 
   products: Product[] = [];
   filteredProducts: Product[] = [];
-  shoppingCart$!: Observable<ShoppingCart | null>; // Remove the null union type
+  shoppingCart$!: Observable<ShoppingCart | null>;
   category = '';
 
   destroy$ = new Subject<void>();
 
-  async ngOnInit() {
-    // Load products and handle filtering
+  ngOnInit() {
     this.productService
       .getAll()
       .pipe(
@@ -40,10 +40,22 @@ export class ProductsComponent implements OnInit, OnDestroy {
           : this.products;
       });
 
-    // Subscribe to cart changes reactively - remove null assignment
-    this.shoppingCart$ = (
-      await this.shoppingCartService.getShoppingCart()
-    ).pipe(takeUntil(this.destroy$));
+    this.shoppingCart$ = this.shoppingCartService
+      .getShoppingCart()
+      .pipe(takeUntil(this.destroy$));
+  }
+
+  clearFilter() {
+    this.router.navigate(['/products']);
+  }
+
+  trackByProduct(index: number, product: Product): string {
+    return product.key || index.toString();
+  }
+
+  getAnimationDelay(product: Product): string {
+    const index = this.filteredProducts.indexOf(product);
+    return `${index * 100}ms`;
   }
 
   ngOnDestroy(): void {

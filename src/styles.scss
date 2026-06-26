@@ -1,4 +1,125 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+// ==========================================
+// CSS Custom Properties (Light Theme - Default)
+// ==========================================
+
+:root {
+  // Primary Colors
+  --color-primary-50: #eef2ff;
+  --color-primary-100: #e0e7ff;
+  --color-primary-200: #c7d2fe;
+  --color-primary-300: #a5b4fc;
+  --color-primary-400: #818cf8;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #4f46e5;
+  --color-primary-700: #4338ca;
+  --color-primary-800: #3730a3;
+  --color-primary-900: #312e81;
+
+  // Surface Colors
+  --bg-page: #f9fafb;
+  --bg-page-secondary: #f3f4f6;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f9fafb;
+  --bg-surface-secondary: #f3f4f6;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+  --bg-navbar: rgba(255, 255, 255, 0.9);
+  --bg-navbar-scrolled: rgba(255, 255, 255, 0.98);
+
+  // Text Colors
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-tertiary: #6b7280;
+  --text-muted: #9ca3af;
+  --text-inverse: #ffffff;
+
+  // Border Colors
+  --border-color: #e5e7eb;
+  --border-color-light: #f3f4f6;
+  --border-color-hover: #d1d5db;
+
+  // Shadow
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+  // Gradient
+  --gradient-primary: linear-gradient(135deg, #4f46e5, #9333ea);
+  --gradient-danger: linear-gradient(to right, #ef4444, #ec4899);
+  --gradient-avatar: linear-gradient(to bottom right, #6366f1, #a855f7);
+
+  // Badge
+  --badge-bg: #e0e7ff;
+  --badge-text: #4338ca;
+}
+
+// ==========================================
+// Dark Theme
+// ==========================================
+
+.dark {
+  // Primary Colors (slightly brighter for dark mode)
+  --color-primary-50: #1e1b4b;
+  --color-primary-100: #312e81;
+  --color-primary-200: #3730a3;
+  --color-primary-300: #4338ca;
+  --color-primary-400: #4f46e5;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #818cf8;
+  --color-primary-700: #a5b4fc;
+  --color-primary-800: #c7d2fe;
+  --color-primary-900: #e0e7ff;
+
+  // Surface Colors
+  --bg-page: #0f172a;
+  --bg-page-secondary: #1e293b;
+  --bg-surface: #1e293b;
+  --bg-surface-hover: #334155;
+  --bg-surface-secondary: #334155;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+  --bg-navbar: rgba(15, 23, 42, 0.9);
+  --bg-navbar-scrolled: rgba(15, 23, 42, 0.98);
+
+  // Text Colors
+  --text-primary: #f1f5f9;
+  --text-secondary: #e2e8f0;
+  --text-tertiary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
+
+  // Border Colors
+  --border-color: #334155;
+  --border-color-light: #1e293b;
+  --border-color-hover: #475569;
+
+  // Shadow
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+
+  // Gradient
+  --gradient-primary: linear-gradient(135deg, #6366f1, #a855f7);
+  --gradient-danger: linear-gradient(to right, #ef4444, #ec4899);
+  --gradient-avatar: linear-gradient(to bottom right, #818cf8, #c084fc);
+
+  // Badge
+  --badge-bg: #312e81;
+  --badge-text: #c7d2fe;
+}
+
+// ==========================================
+// Base Styles
+// ==========================================
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}

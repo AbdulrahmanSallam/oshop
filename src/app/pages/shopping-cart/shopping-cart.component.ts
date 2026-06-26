@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { ShoppingCart } from 'src/app/models/shopping-cart';
 import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
 
@@ -9,11 +9,17 @@ import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
   styleUrls: ['./shopping-cart.component.scss'],
 })
 export class ShoppingCartComponent {
-  private readonly ShoppingCartService = inject(ShoppingCartService);
+  private readonly shoppingCartService = inject(ShoppingCartService);
 
-  cart$!: Observable<ShoppingCart | null>;
+  cart$!: Observable<ShoppingCart>;
 
-  async ngOnInit() {
-    this.cart$ = await this.ShoppingCartService.getShoppingCart();
+  ngOnInit() {
+    this.cart$ = this.shoppingCartService
+      .getShoppingCart()
+      .pipe(map((cart) => cart || new ShoppingCart(new Date().getTime(), {})));
+  }
+
+  clearCart() {
+    this.shoppingCartService.clearCart();
   }
 }

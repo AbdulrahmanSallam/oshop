@@ -14,7 +14,6 @@ export class ShoppingCart implements ShoppingCartData {
   ) {
     for (let productId in items) {
       let item = items[productId];
-      // Create ShoppingCartItem with key properly set
       this.cartItems.push(
         new ShoppingCartItem({
           ...item,
@@ -31,18 +30,14 @@ export class ShoppingCart implements ShoppingCartData {
   }
 
   get totalPrice() {
-    let totalPrice = 0;
-    this.cartItems.map((cartItem) => {
-      totalPrice += cartItem.totalPrice;
-    });
-    return totalPrice;
+    return this.cartItems.reduce((total, cartItem) => {
+      return total + cartItem.totalPrice;
+    }, 0);
   }
-  get totalItemCount() {
-    let count = 0;
-    this.cartItems.map((cartItem) => {
-      count += cartItem.quantity;
-    });
 
-    return count;
+  get totalItemCount() {
+    return this.cartItems.reduce((count, cartItem) => {
+      return count + cartItem.quantity;
+    }, 0);
   }
 }

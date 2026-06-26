@@ -1,37 +1,152 @@
-<section>
-  <div class="container">
-    <h1>Shopping Cart</h1>
+<section class="cart">
+  <div class="cart__container">
+    <!-- Cart Header -->
+    <div class="cart__header">
+      <div class="cart__title-wrapper">
+        <h1 class="cart__title">
+          <span class="cart__title-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </span>
+          Shopping Cart
+        </h1>
+      </div>
 
+      <ng-container *ngIf="cart$ | async as cart">
+        <span class="cart__badge">
+          <i class="fas fa-shopping-bag cart__badge-icon"></i>
+          {{ cart.totalItemCount }}
+          {{ cart.totalItemCount === 1 ? "item" : "items" }}
+        </span>
+      </ng-container>
+    </div>
+
+    <!-- Cart Content -->
     <ng-container *ngIf="cart$ | async as cart">
-      <p>you have {{ cart.totalItemCount }} items in your shopping cart</p>
+      <div class="cart__table-wrapper">
+        <div class="cart__table-scroll">
+          <table class="cart-table">
+            <!-- Table Header -->
+            <thead class="cart-table__head">
+              <tr class="cart-table__row">
+                <th class="cart-table__header cart-table__header--product">
+                  Product
+                </th>
+                <th class="cart-table__header cart-table__header--quantity">
+                  Quantity
+                </th>
+                <th class="cart-table__header cart-table__header--price">
+                  Price
+                </th>
+              </tr>
+            </thead>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let cartItem of cart.cartItems">
-            <td>{{ cartItem.name }}</td>
-            <td>
-              <product-quantity
-                [shopping-cart-item]="cartItem"
-              ></product-quantity>
-            </td>
-            <td>{{ cartItem.totalPrice | currency: "USD" : "symbol" }}</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Total price</th>
-            <th></th>
-            <th>{{ cart.totalPrice | currency: "USD" : "symbol" }}</th>
-          </tr>
-        </tfoot>
-      </table>
+            <!-- Table Body -->
+            <tbody class="cart-table__body">
+              <!-- Empty State -->
+              <tr *ngIf="cart.cartItems.length === 0" class="cart-table__row">
+                <td colspan="3" class="cart-table__cell">
+                  <div class="cart-empty">
+                    <div class="cart-empty__icon-wrapper">
+                      <i class="fas fa-shopping-basket cart-empty__icon"></i>
+                    </div>
+                    <p class="cart-empty__title">Your cart is empty</p>
+                    <p class="cart-empty__description">
+                      Looks like you haven't added anything yet
+                    </p>
+                    <a routerLink="/" class="cart-empty__action">
+                      <i class="fas fa-arrow-left"></i>
+                      Start Shopping
+                    </a>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Cart Items -->
+              <tr
+                *ngFor="let cartItem of cart.cartItems; let i = index"
+                class="cart-table__row cart-table__row--item"
+                [style.animation-delay]="i * 100 + 'ms'"
+              >
+                <td class="cart-table__cell">
+                  <div class="cart-item">
+                    <img
+                      [src]="cartItem.imageUrl"
+                      [alt]="cartItem.name"
+                      class="cart-item__image"
+                      onerror="this.src = 'assets/no-image.png'"
+                    />
+                    <div class="cart-item__info">
+                      <h3 class="cart-item__name">{{ cartItem.name }}</h3>
+                      <p class="cart-item__unit-price">
+                        {{ cartItem.price | currency: "USD" : "symbol" }} each
+                      </p>
+                    </div>
+                  </div>
+                </td>
+
+                <td class="cart-table__cell cart-table__cell--center">
+                  <div class="cart-item__quantity">
+                    <product-quantity
+                      [shopping-cart-item]="cartItem"
+                    ></product-quantity>
+                  </div>
+                </td>
+
+                <td class="cart-table__cell cart-table__cell--right">
+                  <span class="cart-item__total-price">
+                    {{ cartItem.totalPrice | currency: "USD" : "symbol" }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+
+            <!-- Table Footer -->
+            <tfoot class="cart-table__foot">
+              <tr class="cart-table__row">
+                <td
+                  colspan="2"
+                  class="cart-table__cell cart-table__cell--right"
+                >
+                  <span class="cart-table__total-label">Total:</span>
+                </td>
+                <td class="cart-table__cell cart-table__cell--right">
+                  <span class="cart-table__total-value">
+                    {{ cart.totalPrice | currency: "USD" : "symbol" }}
+                  </span>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Cart Actions -->
+      <div class="cart__actions" *ngIf="cart.cartItems.length > 0">
+        <a routerLink="/products" class="cart__action-link">
+          <i class="fas fa-arrow-left"></i>
+          Continue Shopping
+        </a>
+
+        <div>
+          <button
+            (click)="clearCart()"
+            [disabled]="cart.cartItems.length === 0"
+            class="cart__action-btn cart__action-btn--danger mr-4"
+          >
+            <i class="fas fa-trash-alt"></i>
+            Clear Cart
+          </button>
+
+          <button
+            routerLink="/check-out"
+            [disabled]="cart.cartItems.length === 0"
+            class="cart__action-btn cart__action-btn--danger"
+          >
+            <i class="fas fa-paypal"></i>
+            Checkout
+          </button>
+        </div>
+      </div>
     </ng-container>
   </div>
 </section>

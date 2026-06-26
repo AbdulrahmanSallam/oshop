@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Database, objectVal, push, remove } from '@angular/fire/database';
 import { ref, update } from 'firebase/database';
 import { Product } from './product.service';
-import { map, take } from 'rxjs';
+import { BehaviorSubject, map, switchMap, take } from 'rxjs';
 import { ShoppingCart, ShoppingCartData } from '../models/shopping-cart';
 
 export class ShoppingCartItem {
@@ -29,33 +29,49 @@ export class ShoppingCartService {
   private readonly CART_PATH = '/shopping-cart';
   private readonly db = inject(Database);
 
-  async getShoppingCart() {
-    const cartRef = await this.getShoppingCartRef();
-    return objectVal<ShoppingCartData | null>(cartRef).pipe(
-      map((shoppingCart) => {
-        if (shoppingCart) {
-          return new ShoppingCart(shoppingCart.dateCreated, shoppingCart.items);
+  // Make cartId reactive so we can track when it changes
+  private cartId$ = new BehaviorSubject<string | null>(
+    localStorage.getItem(this.CART_STORAGE_KEY),
+  );
+
+  getShoppingCart() {
+    // React to cartId changes and create new observable for the new cart
+    return this.cartId$.pipe(
+      switchMap((cartId) => {
+        if (!cartId) {
+          return new BehaviorSubject<ShoppingCart | null>(null);
         }
-        return null;
+        const cartRef = ref(this.db, `${this.CART_PATH}/${cartId}`);
+        return objectVal<ShoppingCartData | null>(cartRef).pipe(
+          map((shoppingCart: ShoppingCartData | null) => {
+            if (shoppingCart) {
+              return new ShoppingCart(
+                shoppingCart.dateCreated,
+                shoppingCart.items,
+              );
+            }
+            return null;
+          }),
+        );
       }),
     );
   }
 
   async addToCart(product: Product) {
-    // set cartId in local storage
     await this.getOrCreateCartId();
 
     const shoppingCartItemRef = await this.getShoppingCartItemRef(product.key!);
     let item$ = objectVal<ShoppingCartItem | null>(shoppingCartItemRef);
 
-    item$.pipe(take(1)).subscribe((shoppingCartItem) => {
+    item$.pipe(take(1)).subscribe(async (shoppingCartItem) => {
       if (!shoppingCartItem) {
-        return update(shoppingCartItemRef, {
+        await update(shoppingCartItemRef, {
           name: product.name,
           price: product.price,
           imageUrl: product.imageUrl,
           quantity: 1,
         });
+        return;
       }
 
       let shoppingItem = new ShoppingCartItem({
@@ -63,13 +79,8 @@ export class ShoppingCartService {
         key: product.key!,
       });
 
-      return this.updateQuantity(shoppingItem, 1);
+      await this.updateQuantity(shoppingItem, 1);
     });
-  }
-
-  async removeFromCart(product: Product) {
-    const cartItemRef = await this.getShoppingCartItemRef(product.key!);
-    return remove(cartItemRef);
   }
 
   async updateQuantity(shoppingCartItem: ShoppingCartItem, value: number) {
@@ -78,15 +89,27 @@ export class ShoppingCartService {
       shoppingCartItem.key,
     );
 
-    // If quantity would be 0 or less, remove the item from cart
     if (newQuantity <= 0) {
-      return remove(shoppingCartItemRef);
+      return await remove(shoppingCartItemRef);
     }
 
-    // Otherwise update the quantity
-    return update(shoppingCartItemRef, {
+    return await update(shoppingCartItemRef, {
       quantity: newQuantity,
     });
+  }
+
+  async removeFromCart(product: Product) {
+    const cartItemRef = await this.getShoppingCartItemRef(product.key!);
+    return await remove(cartItemRef);
+  }
+
+  async clearCart() {
+    const cartRef = await this.getShoppingCartRef();
+    await remove(cartRef);
+
+    // Clear cart ID and notify observers
+    localStorage.removeItem(this.CART_STORAGE_KEY);
+    this.cartId$.next(null);
   }
 
   private async getOrCreateCartId(): Promise<string> {
@@ -94,7 +117,6 @@ export class ShoppingCartService {
 
     if (cartId) {
       const shoppingCartRef = ref(this.db, `${this.CART_PATH}/${cartId}`);
-      // Convert to promise for cleaner async handling
       const value = await objectVal<ShoppingCartData | null>(shoppingCartRef)
         .pipe(take(1))
         .toPromise();
@@ -110,8 +132,10 @@ export class ShoppingCartService {
       dateCreated: new Date().getTime(),
     });
 
-    localStorage.setItem(this.CART_STORAGE_KEY, result.key!);
-    return result.key!;
+    const newCartId = result.key!;
+    localStorage.setItem(this.CART_STORAGE_KEY, newCartId);
+    this.cartId$.next(newCartId); // Notify that cart ID changed
+    return newCartId;
   }
 
   private async getShoppingCartRef() {

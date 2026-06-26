@@ -1,17 +1,104 @@
-<div class="container pt-4">
-  <div class="row">
-    <div class="col-4 col-md-3 col-lg-2">
-      <product-filter [category]="category"></product-filter>
-    </div>
+<div class="products-page">
+  <div class="products-page__container">
+    <div class="products-page__layout">
+      <!-- Sidebar Filter -->
+      <aside class="products-page__sidebar">
+        <div class="filter-panel">
+          <div class="filter-panel__header">
+            <h2 class="filter-panel__title">
+              <i class="fas fa-filter filter-panel__icon"></i>
+              Filters
+            </h2>
+            <button
+              *ngIf="category"
+              (click)="clearFilter()"
+              class="filter-panel__clear-btn"
+            >
+              Clear
+            </button>
+          </div>
+          <div class="filter-panel__body">
+            <product-filter [category]="category"></product-filter>
+          </div>
+        </div>
+      </aside>
 
-    <div class="col row">
-      <div *ngFor="let product of filteredProducts" class="col-4">
-        <product-card
-          [product]="product"
-          [shoppingCart$]="shoppingCart$"
-          [show-actions]="true"
-        ></product-card>
-      </div>
+      <!-- Products Grid -->
+      <main class="products-page__content">
+        <!-- Products Header -->
+        <div class="products-header">
+          <div class="products-header__info">
+            <h1 class="products-header__title">
+              {{ category || "All Products" }}
+            </h1>
+            <p
+              class="products-header__count"
+              *ngIf="filteredProducts.length > 0"
+            >
+              {{ filteredProducts.length }}
+              {{ filteredProducts.length === 1 ? "product" : "products" }} found
+            </p>
+          </div>
+
+          <button
+            *ngIf="category"
+            (click)="clearFilter()"
+            class="products-header__tag"
+          >
+            <i class="fas fa-times"></i>
+            {{ category }}
+          </button>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid">
+          <product-card
+            *ngFor="
+              let product of filteredProducts;
+              trackBy: trackByProduct;
+              let i = index
+            "
+            [product]="product"
+            [shoppingCart$]="shoppingCart$"
+            [show-actions]="true"
+            class="products-grid__item products-grid__item--animated"
+            [style.animation-delay]="i * 75 + 'ms'"
+          ></product-card>
+        </div>
+
+        <!-- Empty State -->
+        <div
+          *ngIf="filteredProducts.length === 0 && products.length > 0"
+          class="empty-state"
+        >
+          <div class="empty-state__card">
+            <div class="empty-state__icon-wrapper">
+              <i class="fas fa-search empty-state__icon"></i>
+            </div>
+            <h3 class="empty-state__title">No Products Found</h3>
+            <p class="empty-state__description">
+              Try adjusting your filters or browse all categories.
+            </p>
+            <button (click)="clearFilter()" class="empty-state__action">
+              <i class="fas fa-redo mr-2"></i>
+              Clear Filters
+            </button>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="products.length === 0" class="products-grid">
+          <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="product-skeleton">
+            <div class="product-skeleton__image"></div>
+            <div
+              class="product-skeleton__text product-skeleton__text--short"
+            ></div>
+            <div
+              class="product-skeleton__text product-skeleton__text--long"
+            ></div>
+          </div>
+        </div>
+      </main>
     </div>
   </div>
 </div>

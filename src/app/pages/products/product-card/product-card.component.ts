@@ -21,6 +21,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   shoppingCart$!: Observable<ShoppingCart | null>;
 
   shoppingCartItem: ShoppingCartItem | null = null;
+  private cart: ShoppingCart | null = null;
   private destroy$ = new Subject<void>();
 
   addToCart() {
@@ -30,8 +31,9 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.shoppingCart$) {
       this.shoppingCart$.pipe(takeUntil(this.destroy$)).subscribe((cart) => {
-        if (cart) {
-          this.shoppingCartItem = cart.getItem(this.product.key!);
+        this.cart = cart;
+        if (cart && this.product?.key) {
+          this.shoppingCartItem = cart.getItem(this.product.key);
         } else {
           this.shoppingCartItem = null;
         }

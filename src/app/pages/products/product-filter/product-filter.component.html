@@ -1,19 +1,27 @@
-<div class="sticky-top">
-  <div class="list-group">
-    <a
-      routerLink="/"
-      [class.active]="!category"
-      class="list-group-item list-group-item-action"
-    >
-      All categories</a
-    >
-    <a
-      *ngFor="let c of categories$ | async"
-      routerLink="/"
-      [queryParams]="{ category: c.key }"
-      class="list-group-item list-group-item-action"
-      [class.active]="c.key === category"
-      >{{ c.name }}</a
-    >
-  </div>
-</div>
+<nav class="category-nav">
+  <!-- All Categories Link -->
+  <a
+    routerLink="/products"
+    class="category-nav__item"
+    [class.category-nav__item--active]="!category"
+    [class.category-nav__item--inactive]="category"
+  >
+    <i class="category-nav__icon fas fa-border-all"></i>
+    <span class="category-nav__label">All Categories</span>
+    <i *ngIf="!category" class="category-nav__check fas fa-check"></i>
+  </a>
+
+  <!-- Category Links -->
+  <a
+    *ngFor="let c of categories$ | async"
+    routerLink="/products"
+    [queryParams]="{ category: c.key }"
+    class="category-nav__item"
+    [class.category-nav__item--active]="c.key === category"
+    [class.category-nav__item--inactive]="c.key !== category"
+  >
+    <i class="category-nav__icon fas fa-folder"></i>
+    <span class="category-nav__label">{{ c.name }}</span>
+    <i *ngIf="c.key === category" class="category-nav__check fas fa-check"></i>
+  </a>
+</nav>

@@ -1,9 +1,22 @@
-<div class="d-flex justify-content-between align-items-center">
-  <button (click)="updateQuantity(-1)" class="btn btn-secondary">-</button>
+<div class="quantity-container">
+  <button
+    class="quantity-btn quantity-btn--minus"
+    (click)="updateQuantity(-1)"
+    [disabled]="shoppingCartItem.quantity <= 1"
+    aria-label="Decrease quantity"
+  >
+    <i class="fas fa-minus text-xs"></i>
+  </button>
 
-  <div class="text-center">
-    {{ shoppingCartItem.quantity }}
+  <div class="quantity-value">
+    <span class="quantity-value__number">{{ shoppingCartItem.quantity }}</span>
   </div>
 
-  <button (click)="updateQuantity(1)" class="btn btn-secondary">+</button>
+  <button
+    class="quantity-btn quantity-btn--plus"
+    (click)="updateQuantity(1)"
+    aria-label="Increase quantity"
+  >
+    <i class="fas fa-plus text-xs"></i>
+  </button>
 </div>

@@ -1,27 +1,29 @@
 <div class="card">
-  <img class="card-img-top" [src]="product.imageUrl" [alt]="product.name" />
-  <div class="card-body">
-    <h3 class="card-title">
-      {{ product.name }}
-    </h3>
-    <p class="card-text">
-      {{ product.price | currency: "USD" : "symbol" }}
-    </p>
+  <div class="card-image">
+    <img [src]="product.imageUrl" [alt]="product.name" />
+    <div class="card-overlay">
+      <span class="text-white text-sm font-medium">Quick View</span>
+    </div>
   </div>
 
-  <div *ngIf="showActions" class="card-footer">
-    <button
-      *ngIf="!shoppingCartItem; else quantity"
-      (click)="addToCart()"
-      class="btn btn-primary w-100 rounded-0"
-    >
-      Add to cart
-    </button>
+  <div class="card-body">
+    <h3 class="card-title">{{ product.name }}</h3>
+    <p class="card-price">{{ product.price | currency }}</p>
 
-    <ng-template #quantity>
-      <product-quantity
-        [shopping-cart-item]="shoppingCartItem!"
-      ></product-quantity>
-    </ng-template>
+    <div *ngIf="showActions" class="card-actions">
+      <!-- Show Add to Cart button or Quantity selector -->
+      <ng-container *ngIf="!shoppingCartItem; else quantityTemplate">
+        <button class="add-to-cart-btn" (click)="addToCart()">
+          <i class="fas fa-cart-plus mr-2"></i>
+          Add to Cart
+        </button>
+      </ng-container>
+
+      <ng-template #quantityTemplate>
+        <product-quantity
+          [shopping-cart-item]="shoppingCartItem!"
+        ></product-quantity>
+      </ng-template>
+    </div>
   </div>
 </div>

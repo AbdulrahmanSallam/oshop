@@ -18,7 +18,12 @@ export class ProductQuantityComponent {
   updateQuantity(value: number) {
     const newQuantity = this.shoppingCartItem.quantity + value;
 
+    // Prevent negative quantities
     if (newQuantity < 0) {
+      return;
+    }
+
+    if (newQuantity > 99) {
       return;
     }
 
