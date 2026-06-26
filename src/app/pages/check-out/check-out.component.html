@@ -1,1 +1,20 @@
-<p>check-out works!</p>
+<div class="checkout">
+  <h1>Shipping</h1>
+
+  <form [formGroup]="shippingForm" (submit)="handleSubmit()">
+    <div>
+      <label class="block" for="name">Name</label>
+      <input formControlName="name" type="text" name="name" />
+    </div>
+    <div>
+      <label class="block" for="address">Address</label>
+      <input formControlName="address" type="text" name="address" />
+    </div>
+    <div>
+      <label class="block" for="city">City</label>
+      <input formControlName="city" type="text" name="city" />
+    </div>
+
+    <button>Place order</button>
+  </form>
+</div>

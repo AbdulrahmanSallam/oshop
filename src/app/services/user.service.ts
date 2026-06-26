@@ -25,8 +25,10 @@ export class UserService {
 
     const userRef = ref(this.db, '/users/' + uid);
     return from(get(userRef)).pipe(
-      map((user) => {
-        if (user.exists()) return user.val() as AppUser;
+      map((snapshot) => {
+        if (snapshot.exists()) {
+          return { _id: uid, ...snapshot.val() } as AppUser;
+        }
         return null;
       }),
     );
@@ -40,7 +42,8 @@ export class UserService {
     return new Observable<AppUser | null>((subscriber) => {
       const unsubscribe = onValue(userRef, (snapshot) => {
         if (snapshot.exists()) {
-          subscriber.next(snapshot.val() as AppUser);
+          // Add _id to the returned data
+          subscriber.next({ _id: uid, ...snapshot.val() } as AppUser);
         } else {
           subscriber.next(null);
         }

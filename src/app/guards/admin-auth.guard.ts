@@ -1,7 +1,7 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { UserService } from '../services/user.service';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 import { map, switchMap } from 'rxjs';
 
 export const adminAuthGuard: CanActivateFn = (route, state) => {
@@ -10,7 +10,7 @@ export const adminAuthGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   return authService.user$.pipe(
-    switchMap((user) => userService.get(user?.uid ?? null)),
+    switchMap((uid) => userService.get(uid)),
     map((appUser) => {
       if (appUser?.isAdmin) {
         return true;

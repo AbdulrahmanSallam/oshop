@@ -7,7 +7,7 @@ import {
 } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from './user.service';
-import { switchMap } from 'rxjs';
+import { switchMap, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class AuthService {
   route = inject(ActivatedRoute);
   router = inject(Router);
 
-  user$ = authState(this.auth);
+  user$ = authState(this.auth).pipe(map((user) => (user ? user.uid : null)));
 
   login() {
     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
@@ -38,9 +38,6 @@ export class AuthService {
   }
 
   get appUser$() {
-    return this.user$.pipe(
-      // switchMap((user) => this.userService.get(user?.uid ?? null)),
-      switchMap((user) => this.userService.watch(user?.uid ?? null)), // this realtime
-    );
+    return this.user$.pipe(switchMap((uid) => this.userService.watch(uid)));
   }
 }
