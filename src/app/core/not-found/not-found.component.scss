@@ -1,0 +1,224 @@
+.not-found {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--bg-page) 0%,
+    var(--bg-page-secondary) 100%
+  );
+  padding: 32px 16px;
+  transition: background-color 0.3s;
+
+  &__container {
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__content {
+    animation: slideUp 0.6s ease-out;
+  }
+
+  // 404 Number Display
+  &__illustration {
+    margin-bottom: 32px;
+  }
+
+  &__number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  &__digit {
+    font-size: 120px;
+    font-weight: 900;
+    line-height: 1;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeInScale 0.8s ease-out both;
+
+    &--left {
+      animation-delay: 0.1s;
+    }
+
+    &--right {
+      animation-delay: 0.3s;
+    }
+  }
+
+  &__icon-wrapper {
+    width: 100px;
+    height: 100px;
+    background: var(--gradient-primary);
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: bounceIn 0.8s ease-out 0.2s both;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+  }
+
+  &__icon {
+    font-size: 44px;
+    color: white;
+  }
+
+  // Text
+  &__title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    animation: fadeIn 0.5s ease-out 0.4s both;
+  }
+
+  &__description {
+    font-size: 16px;
+    color: var(--text-tertiary);
+    margin-bottom: 4px;
+    animation: fadeIn 0.5s ease-out 0.5s both;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    animation: fadeIn 0.5s ease-out 0.6s both;
+  }
+
+  // Buttons
+  &__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    animation: fadeIn 0.5s ease-out 0.7s both;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &--primary {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+      }
+    }
+
+    &--secondary {
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      &:hover {
+        border-color: var(--color-primary-400);
+        color: var(--color-primary-500);
+      }
+    }
+  }
+
+  // Helpful Links
+  &__links {
+    animation: fadeIn 0.5s ease-out 0.8s both;
+  }
+
+  &__links-label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  &__links-list {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--text-tertiary);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: var(--color-primary-500);
+      border-color: var(--color-primary-300);
+      background: var(--color-primary-50);
+    }
+  }
+}
+
+// Animations
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

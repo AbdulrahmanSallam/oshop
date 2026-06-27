@@ -4,12 +4,14 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'shared/shared.module';
 
 import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { NotFoundComponent } from './core/not-found/not-found.component';
 import { ShoppingModule } from './shopping/shopping.module';
 
 const firebaseConfig = {
@@ -27,14 +29,15 @@ const firebaseConfig = {
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    CoreModule,
+    BrowserModule,
+    BrowserAnimationsModule,
     SharedModule,
+    CoreModule,
     AdminModule,
     ShoppingModule,
 
-    BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
+    RouterModule.forRoot([{ path: '**', component: NotFoundComponent }]),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),

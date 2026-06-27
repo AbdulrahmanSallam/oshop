@@ -1,27 +1,73 @@
-# Oshop
+# OShop - Angular E-Commerce Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+A full-featured e-commerce web application built with Angular 16, Firebase, and Tailwind CSS. This project demonstrates modern web development practices including real-time data synchronization, role-based authentication, responsive design, and a comprehensive admin dashboard.
 
-## Development server
+## Live Demo
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+https://abdulrahmansallam.github.io/oshop/products
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Shopping Experience
 
-## Build
+- Browse products with category-based filtering
+- Real-time shopping cart with quantity management
+- Add and remove items with instant UI updates
+- Complete checkout flow with shipping form
+- Order summary and confirmation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Authentication and Authorization
 
-## Running unit tests
+- Google sign-in via Firebase Authentication
+- Role-based access control for customers and administrators
+- Protected routes using Angular route guards
+- Persistent user sessions with profile management
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Admin Dashboard
 
-## Running end-to-end tests
+- Full CRUD operations for product management
+- Order tracking and management interface
+- Interactive data tables with search, sort, and pagination
+- Image preview when creating or editing products
+- Custom confirmation dialogs for destructive actions
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### User Interface
 
-## Further help
+- Dark and light theme support using CSS custom properties
+- Fully responsive design optimized for mobile, tablet, and desktop
+- Smooth animations and micro-interactions
+- BEM methodology for maintainable and scalable styles
+- Clean, modern design with consistent spacing and typography
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Technical Highlights
+
+- Built with Angular 16 and TypeScript
+- Firebase Realtime Database for live data synchronization
+- Reactive forms with custom validation
+- Lazy-loaded feature modules for optimal performance
+- Angular animations for enhanced user experience
+- Modular architecture with clear separation of concerns
+
+## Tech Stack
+
+| Category           | Technology                 |
+| ------------------ | -------------------------- |
+| Frontend Framework | Angular 16                 |
+| Language           | TypeScript                 |
+| Styling            | Tailwind CSS 3, SCSS       |
+| CSS Methodology    | BEM                        |
+| Backend            | Firebase Realtime Database |
+| Authentication     | Firebase Auth (Google)     |
+| Icons              | Font Awesome               |
+| Data Tables        | DataTables.net             |
+| Build Tool         | Angular CLI                |
+
+## Project Structure
+
+- **admin/** - Admin module with product management, order management, and admin guards
+- **core/** - Core module containing navbar, footer, and 404 page components
+- **shopping/** - Shopping module with products, cart, checkout, and my orders components
+- **services/** - Firebase services for authentication, products, orders, and shopping cart
+- **models/** - TypeScript interfaces for order, shopping cart, and app user types
+- **assets/** - Static assets including images and fonts
+- **styles.scss** - Global styles and theme CSS custom properties
