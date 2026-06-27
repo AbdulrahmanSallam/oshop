@@ -3,14 +3,14 @@ import { ShoppingCartService } from 'shared/services/shopping-cart.service';
 import { ShoppingCartItem } from 'shared/models/ShoppingCartItem';
 
 @Component({
-  selector: 'product-quantity',
+  selector: 'app-product-quantity',
   templateUrl: './product-quantity.component.html',
   styleUrls: ['./product-quantity.component.scss'],
 })
 export class ProductQuantityComponent {
   shoppingCartService = inject(ShoppingCartService);
 
-  @Input({ required: true, alias: 'shopping-cart-item' })
+  @Input({ required: true })
   shoppingCartItem!: ShoppingCartItem;
 
   updateQuantity(value: number) {

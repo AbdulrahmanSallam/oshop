@@ -12,8 +12,8 @@ export class ShoppingCart implements ShoppingCartData {
     public dateCreated: number,
     public items: { [productId: string]: ShoppingCartItem } = {},
   ) {
-    for (let productId in items) {
-      let item = items[productId];
+    for (const productId in items) {
+      const item = items[productId];
       this.cartItems.push(
         new ShoppingCartItem({
           ...item,

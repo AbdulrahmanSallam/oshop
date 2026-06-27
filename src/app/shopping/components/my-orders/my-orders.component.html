@@ -23,7 +23,10 @@
       </div>
 
       <div class="my-orders__list" *ngIf="orders.length > 0">
-        <order-item *ngFor="let order of orders" [order]="order"></order-item>
+        <app-order-item
+          *ngFor="let order of orders"
+          [order]="order"
+        ></app-order-item>
       </div>
     </ng-container>
 

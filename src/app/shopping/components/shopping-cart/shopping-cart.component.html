@@ -50,9 +50,9 @@
                 </p>
               </div>
               <div class="cart__item-actions">
-                <product-quantity
-                  [shopping-cart-item]="item"
-                ></product-quantity>
+                <app-product-quantity
+                  [shoppingCartItem]="item"
+                ></app-product-quantity>
                 <span class="cart__item-total">{{
                   item.totalPrice | currency: "USD" : "symbol"
                 }}</span>

@@ -2,13 +2,13 @@ import { Component, inject, Input } from '@angular/core';
 import { CategoryService } from 'shared/services/category.service';
 
 @Component({
-  selector: 'product-filter',
+  selector: 'app-product-filter',
   templateUrl: './product-filter.component.html',
   styleUrls: ['./product-filter.component.scss'],
 })
 export class ProductFilterComponent {
   private categoryService = inject(CategoryService);
 
-  @Input('category') category!: string;
+  @Input() category!: string;
   categories$ = this.categoryService.getAll();
 }

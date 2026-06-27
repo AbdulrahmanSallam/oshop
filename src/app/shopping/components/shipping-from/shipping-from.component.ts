@@ -9,12 +9,12 @@ import { AuthService } from 'shared/services/auth.service';
 import { OrderService } from 'shared/services/order.service';
 
 @Component({
-  selector: 'shipping-from',
+  selector: 'app-shipping-from',
   templateUrl: './shipping-from.component.html',
   styleUrls: ['./shipping-from.component.scss'],
 })
 export class ShippingFromComponent implements OnInit, OnDestroy {
-  @Input('cart') cart!: ShoppingCart | null;
+  @Input() cart!: ShoppingCart | null;
 
   private readonly orderService = inject(OrderService);
   private readonly authService = inject(AuthService);

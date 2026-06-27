@@ -46,7 +46,7 @@ export class ShoppingCartService {
     await this.getOrCreateCartId();
 
     const shoppingCartItemRef = await this.getShoppingCartItemRef(product.key!);
-    let item$ = objectVal<ShoppingCartItem | null>(shoppingCartItemRef);
+    const item$ = objectVal<ShoppingCartItem | null>(shoppingCartItemRef);
 
     item$.pipe(take(1)).subscribe(async (shoppingCartItem) => {
       if (!shoppingCartItem) {
@@ -59,7 +59,7 @@ export class ShoppingCartService {
         return;
       }
 
-      let shoppingItem = new ShoppingCartItem({
+      const shoppingItem = new ShoppingCartItem({
         ...shoppingCartItem,
         key: product.key!,
       });
@@ -98,7 +98,7 @@ export class ShoppingCartService {
   }
 
   private async getOrCreateCartId(): Promise<string> {
-    let cartId = localStorage.getItem(this.CART_STORAGE_KEY);
+    const cartId = localStorage.getItem(this.CART_STORAGE_KEY);
 
     if (cartId) {
       const shoppingCartRef = ref(this.db, `${this.CART_PATH}/${cartId}`);

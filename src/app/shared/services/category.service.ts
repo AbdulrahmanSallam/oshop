@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Database, listVal } from '@angular/fire/database';
-import { onValue, ref } from 'firebase/database';
-import { Observable, shareReplay } from 'rxjs';
+import { ref } from 'firebase/database';
 
 export interface Category {
   name: string;
@@ -13,8 +12,6 @@ export interface Category {
 })
 export class CategoryService {
   db = inject(Database);
-
-  constructor() {}
 
   getAll() {
     const categoryRef = ref(this.db, '/categories/');

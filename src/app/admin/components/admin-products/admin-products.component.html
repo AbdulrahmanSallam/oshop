@@ -58,6 +58,8 @@
                 </a>
                 <button
                   (click)="confirmDelete(product)"
+                  (keyup.enter)="confirmDelete(product)"
+                  tabindex="0"
                   class="admin-products__btn admin-products__btn--delete"
                 >
                   <i class="fas fa-trash"></i>
@@ -72,7 +74,12 @@
 
   <!-- Delete Confirmation Modal -->
   <div class="modal" [class.modal--open]="showDeleteModal">
-    <div class="modal__overlay" (click)="cancelDelete()"></div>
+    <div
+      class="modal__overlay"
+      (click)="cancelDelete()"
+      (keyup.enter)="cancelDelete()"
+      tabindex="0"
+    ></div>
     <div class="modal__content">
       <div class="modal__icon-wrapper">
         <i class="fas fa-exclamation-triangle"></i>
@@ -84,7 +91,12 @@
         >? This action cannot be undone.
       </p>
       <div class="modal__actions">
-        <button class="modal__btn modal__btn--cancel" (click)="cancelDelete()">
+        <button
+          class="modal__btn modal__btn--cancel"
+          (click)="cancelDelete()"
+          (keyup.enter)="cancelDelete()"
+          tabindex="0"
+        >
           Cancel
         </button>
         <button

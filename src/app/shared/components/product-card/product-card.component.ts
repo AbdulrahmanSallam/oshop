@@ -6,16 +6,16 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { ShoppingCart } from 'shared/models/shopping-cart';
 
 @Component({
-  selector: 'product-card',
+  selector: 'app-product-card',
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.scss'],
 })
 export class ProductCardComponent implements OnInit, OnDestroy {
   shoppingCartService = inject(ShoppingCartService);
 
-  @Input({ required: true, alias: 'product' }) product!: Product;
-  @Input({ required: true, alias: 'show-actions' }) showActions!: boolean;
-  @Input({ alias: 'shoppingCart$' })
+  @Input({ required: true }) product!: Product;
+  @Input({ required: true }) showActions!: boolean;
+  @Input({})
   shoppingCart$!: Observable<ShoppingCart | null>;
 
   shoppingCartItem: ShoppingCartItem | null = null;

@@ -14,11 +14,11 @@
       </div>
 
       <div class="admin-orders__list" *ngIf="orders.length > 0">
-        <order-item
+        <app-order-item
           *ngFor="let order of orders"
           [order]="order"
           [showUser]="true"
-        ></order-item>
+        ></app-order-item>
       </div>
     </ng-container>
   </div>

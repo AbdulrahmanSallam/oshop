@@ -12,6 +12,8 @@
       <div class="login__body">
         <button
           (click)="login()"
+          (keyup.enter)="login()"
+          tabindex="0"
           class="login__google-btn"
           [disabled]="isLoading"
         >

@@ -38,7 +38,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     imageUrl: new FormControl('', [
       Validators.required,
       Validators.pattern(
-        /^(https?:\/\/)([\w\-]+\.)+[\w\-]+(\/[\w\-\.~!$&'()*+,;=:@%?]*)*$/i,
+        /^(https?:\/\/)([\w-]+\.)+[\w-]+(\/[\w\-.~!$&'()*+,;=:@%?]*)*$/i,
       ),
     ]),
   });

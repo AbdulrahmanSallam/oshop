@@ -1,5 +1,11 @@
 <div class="order-item">
-  <div class="order-item__header" (click)="toggle()">
+  <button
+    class="order-item__header"
+    (click)="toggle()"
+    aria-expanded="false"
+    [attr.aria-expanded]="isOpen"
+    aria-label="Toggle order details"
+  >
     <div class="order-item__info">
       <span class="order-item__id">#{{ order.key?.slice(-6) }}</span>
       <span class="order-item__date">
@@ -21,7 +27,7 @@
         [class.fa-chevron-up]="isOpen"
       ></i>
     </div>
-  </div>
+  </button>
 
   <div class="order-item__body" *ngIf="isOpen">
     <div class="order-item__shipping">

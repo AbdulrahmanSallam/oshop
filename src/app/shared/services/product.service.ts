@@ -17,8 +17,6 @@ import { Product } from 'shared/models/Product';
 export class ProductService {
   db = inject(Database);
 
-  constructor() {}
-
   create(product: Product) {
     const productRef = ref(this.db, '/products/');
     push(productRef, product);

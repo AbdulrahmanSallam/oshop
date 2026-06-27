@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Product } from 'shared/models/Product';
 import { ShoppingCart } from 'shared/models/shopping-cart';
@@ -10,7 +10,7 @@ import { ShoppingCartService } from 'shared/services/shopping-cart.service';
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.scss'],
 })
-export class ShoppingCartComponent {
+export class ShoppingCartComponent implements OnInit {
   private readonly shoppingCartService = inject(ShoppingCartService);
 
   cart$!: Observable<ShoppingCart>;

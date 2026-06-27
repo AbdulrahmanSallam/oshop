@@ -18,7 +18,7 @@
             </button>
           </div>
           <div class="filter-panel__body">
-            <product-filter [category]="category"></product-filter>
+            <app-product-filter [category]="category"></app-product-filter>
           </div>
         </div>
       </aside>
@@ -52,7 +52,7 @@
 
         <!-- Products Grid -->
         <div class="products-grid">
-          <product-card
+          <app-product-card
             *ngFor="
               let product of filteredProducts;
               trackBy: trackByProduct;
@@ -60,10 +60,10 @@
             "
             [product]="product"
             [shoppingCart$]="shoppingCart$"
-            [show-actions]="true"
+            [showActions]="true"
             class="products-grid__item products-grid__item--animated"
             [style.animation-delay]="i * 75 + 'ms'"
-          ></product-card>
+          ></app-product-card>
         </div>
 
         <!-- Empty State -->

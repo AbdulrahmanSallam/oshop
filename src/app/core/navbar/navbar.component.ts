@@ -14,10 +14,9 @@ import { ShoppingCart } from 'shared/models/shopping-cart';
 import { AuthService } from 'shared/services/auth.service';
 
 @Component({
-  selector: 'navbar',
+  selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  host: { '(document:click)': 'onDocumentClick($event)' },
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   private readonly shoppingCartService = inject(ShoppingCartService);
@@ -62,6 +61,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
     if (
       this.isDropdownOpen &&
