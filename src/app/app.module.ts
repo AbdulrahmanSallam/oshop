@@ -2,16 +2,14 @@ import { NgModule } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DataTablesModule } from 'angular-datatables';
+import { SharedModule } from 'shared/shared.module';
 
+import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './core/navbar/navbar.component';
-import { SharedModule } from 'shared/shared.module';
-import { AdminModule } from './admin/admin.module';
+import { CoreModule } from './core/core.module';
 import { ShoppingModule } from './shopping/shopping.module';
 
 const firebaseConfig = {
@@ -27,16 +25,16 @@ const firebaseConfig = {
 };
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule,
+    CoreModule,
     SharedModule,
     AdminModule,
     ShoppingModule,
+
+    BrowserModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule,
     AppRoutingModule,
-    DataTablesModule,
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),

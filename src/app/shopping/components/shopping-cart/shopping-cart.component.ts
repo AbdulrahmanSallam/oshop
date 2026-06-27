@@ -1,7 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { ShoppingCartService } from 'shared/services/shopping-cart.service';
 import { Observable, map } from 'rxjs';
+import { Product } from 'shared/models/Product';
 import { ShoppingCart } from 'shared/models/shopping-cart';
+import { ShoppingCartItem } from 'shared/models/ShoppingCartItem';
+import { ShoppingCartService } from 'shared/services/shopping-cart.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -21,5 +23,10 @@ export class ShoppingCartComponent {
 
   clearCart() {
     this.shoppingCartService.clearCart();
+  }
+
+  removeItem(item: ShoppingCartItem) {
+    const product = { key: item.key } as Product;
+    this.shoppingCartService.removeFromCart(product);
   }
 }

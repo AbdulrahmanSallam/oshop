@@ -2,16 +2,16 @@ import { inject, Injectable } from '@angular/core';
 import { Order } from 'shared/models/order';
 import {
   Database,
-  list,
   ref,
   query,
   orderByChild,
   equalTo,
   listVal,
+  objectVal,
 } from '@angular/fire/database';
 import { ShoppingCartService } from 'shared/services/shopping-cart.service';
 import { push } from 'firebase/database';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -41,5 +41,12 @@ export class OrderService {
     );
 
     return listVal(userOrdersQuery, { keyField: 'key' });
+  }
+
+  getOrderById(orderId: string): Observable<Order> {
+    const orderRef = ref(this.db, `/orders/${orderId}`);
+    return objectVal(orderRef, { keyField: 'key' }).pipe(
+      map((order: any) => order as Order),
+    );
   }
 }

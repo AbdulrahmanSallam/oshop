@@ -1,150 +1,117 @@
 <section class="cart">
   <div class="cart__container">
-    <!-- Cart Header -->
+    <!-- Header -->
     <div class="cart__header">
-      <div class="cart__title-wrapper">
-        <h1 class="cart__title">
-          <span class="cart__title-icon">
-            <i class="fas fa-shopping-cart"></i>
-          </span>
-          Shopping Cart
-        </h1>
-      </div>
-
+      <h1 class="cart__title">
+        <i class="fas fa-shopping-cart cart__title-icon"></i>
+        Shopping Cart
+      </h1>
       <ng-container *ngIf="cart$ | async as cart">
-        <span class="cart__badge">
-          <i class="fas fa-shopping-bag cart__badge-icon"></i>
-          {{ cart.totalItemCount }}
-          {{ cart.totalItemCount === 1 ? "item" : "items" }}
-        </span>
+        <span class="cart__count"
+          >{{ cart.totalItemCount }}
+          {{ cart.totalItemCount === 1 ? "item" : "items" }}</span
+        >
       </ng-container>
     </div>
 
-    <!-- Cart Content -->
     <ng-container *ngIf="cart$ | async as cart">
-      <div class="cart__table-wrapper">
-        <div class="cart__table-scroll">
-          <table class="cart-table">
-            <!-- Table Header -->
-            <thead class="cart-table__head">
-              <tr class="cart-table__row">
-                <th class="cart-table__header cart-table__header--product">
-                  Product
-                </th>
-                <th class="cart-table__header cart-table__header--quantity">
-                  Quantity
-                </th>
-                <th class="cart-table__header cart-table__header--price">
-                  Price
-                </th>
-              </tr>
-            </thead>
-
-            <!-- Table Body -->
-            <tbody class="cart-table__body">
-              <!-- Empty State -->
-              <tr *ngIf="cart.cartItems.length === 0" class="cart-table__row">
-                <td colspan="3" class="cart-table__cell">
-                  <div class="cart-empty">
-                    <div class="cart-empty__icon-wrapper">
-                      <i class="fas fa-shopping-basket cart-empty__icon"></i>
-                    </div>
-                    <p class="cart-empty__title">Your cart is empty</p>
-                    <p class="cart-empty__description">
-                      Looks like you haven't added anything yet
-                    </p>
-                    <a routerLink="/" class="cart-empty__action">
-                      <i class="fas fa-arrow-left"></i>
-                      Start Shopping
-                    </a>
-                  </div>
-                </td>
-              </tr>
-
-              <!-- Cart Items -->
-              <tr
-                *ngFor="let cartItem of cart.cartItems; let i = index"
-                class="cart-table__row cart-table__row--item"
-                [style.animation-delay]="i * 100 + 'ms'"
-              >
-                <td class="cart-table__cell">
-                  <div class="cart-item">
-                    <img
-                      [src]="cartItem.imageUrl"
-                      [alt]="cartItem.name"
-                      class="cart-item__image"
-                      onerror="this.src = 'assets/no-image.png'"
-                    />
-                    <div class="cart-item__info">
-                      <h3 class="cart-item__name">{{ cartItem.name }}</h3>
-                      <p class="cart-item__unit-price">
-                        {{ cartItem.price | currency: "USD" : "symbol" }} each
-                      </p>
-                    </div>
-                  </div>
-                </td>
-
-                <td class="cart-table__cell cart-table__cell--center">
-                  <div class="cart-item__quantity">
-                    <product-quantity
-                      [shopping-cart-item]="cartItem"
-                    ></product-quantity>
-                  </div>
-                </td>
-
-                <td class="cart-table__cell cart-table__cell--right">
-                  <span class="cart-item__total-price">
-                    {{ cartItem.totalPrice | currency: "USD" : "symbol" }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-
-            <!-- Table Footer -->
-            <tfoot class="cart-table__foot">
-              <tr class="cart-table__row">
-                <td
-                  colspan="2"
-                  class="cart-table__cell cart-table__cell--right"
-                >
-                  <span class="cart-table__total-label">Total:</span>
-                </td>
-                <td class="cart-table__cell cart-table__cell--right">
-                  <span class="cart-table__total-value">
-                    {{ cart.totalPrice | currency: "USD" : "symbol" }}
-                  </span>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+      <!-- Empty State -->
+      <div class="cart__empty" *ngIf="cart.cartItems.length === 0">
+        <div class="cart__empty-art">
+          <i class="fas fa-shopping-bag"></i>
         </div>
+        <h2>Your cart is empty</h2>
+        <p>Add some products to get started</p>
+        <a routerLink="/products" class="cart__empty-btn">
+          <i class="fas fa-arrow-right"></i> Browse Products
+        </a>
       </div>
 
-      <!-- Cart Actions -->
-      <div class="cart__actions" *ngIf="cart.cartItems.length > 0">
-        <a routerLink="/products" class="cart__action-link">
-          <i class="fas fa-arrow-left"></i>
-          Continue Shopping
-        </a>
-
-        <div>
-          <button
-            (click)="clearCart()"
-            [disabled]="cart.cartItems.length === 0"
-            class="cart__action-btn cart__action-btn--danger mr-4"
+      <!-- Cart Items -->
+      <div class="cart__layout" *ngIf="cart.cartItems.length > 0">
+        <div class="cart__items">
+          <div
+            class="cart__item"
+            *ngFor="let item of cart.cartItems; let i = index"
+            [style.animation-delay]="i * 80 + 'ms'"
           >
-            <i class="fas fa-trash-alt"></i>
-            Clear Cart
-          </button>
+            <div class="cart__item-image-wrapper">
+              <img
+                [src]="item.imageUrl"
+                [alt]="item.name"
+                class="cart__item-image"
+              />
+            </div>
+            <div class="cart__item-body">
+              <div class="cart__item-info">
+                <h3 class="cart__item-name">{{ item.name }}</h3>
+                <p class="cart__item-price">
+                  {{ item.price | currency: "USD" : "symbol" }}
+                </p>
+              </div>
+              <div class="cart__item-actions">
+                <product-quantity
+                  [shopping-cart-item]="item"
+                ></product-quantity>
+                <span class="cart__item-total">{{
+                  item.totalPrice | currency: "USD" : "symbol"
+                }}</span>
+              </div>
+            </div>
+            <button
+              class="cart__item-remove"
+              (click)="removeItem(item)"
+              title="Remove"
+            >
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
 
-          <button
-            routerLink="/check-out"
-            [disabled]="cart.cartItems.length === 0"
-            class="cart__action-btn cart__action-btn--danger"
-          >
-            <i class="fas fa-paypal"></i>
-            Checkout
-          </button>
+        <!-- Sidebar Summary -->
+        <div class="cart__sidebar">
+          <div class="cart__summary">
+            <h3 class="cart__summary-title">Order Summary</h3>
+
+            <div class="cart__summary-rows">
+              <div class="cart__summary-row">
+                <span>Subtotal</span>
+                <span>{{ cart.totalPrice | currency: "USD" : "symbol" }}</span>
+              </div>
+              <div class="cart__summary-row">
+                <span>Shipping</span>
+                <span class="cart__summary-free">Free</span>
+              </div>
+            </div>
+
+            <div class="cart__summary-divider"></div>
+
+            <div class="cart__summary-total">
+              <span>Total</span>
+              <span>{{ cart.totalPrice | currency: "USD" : "symbol" }}</span>
+            </div>
+
+            <a routerLink="/check-out" class="cart__checkout">
+              <i class="fas fa-lock"></i> Secure Checkout
+            </a>
+
+            <div class="cart__summary-footer">
+              <a routerLink="/products" class="cart__continue">
+                <i class="fas fa-arrow-left"></i> Continue Shopping
+              </a>
+              <button (click)="clearCart()" class="cart__clear">
+                <i class="fas fa-trash"></i> Clear
+              </button>
+            </div>
+          </div>
+
+          <!-- Accepted Payments -->
+          <div class="cart__payments">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-paypal"></i>
+            <i class="fab fa-cc-amex"></i>
+          </div>
         </div>
       </div>
     </ng-container>

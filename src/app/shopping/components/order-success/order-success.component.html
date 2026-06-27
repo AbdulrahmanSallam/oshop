@@ -1,1 +1,114 @@
-<p>order-success works!</p>
+<div class="order-success">
+  <div class="order-success__container">
+    <div class="order-success__card">
+      <!-- Success Icon -->
+      <div class="order-success__icon-wrapper">
+        <div class="order-success__icon-circle">
+          <i class="fas fa-check"></i>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="order-success__title">Order Placed Successfully!</h1>
+      <p class="order-success__subtitle">
+        Thank you for your purchase. Your order has been confirmed.
+      </p>
+
+      <!-- Order Details -->
+      <div class="order-success__details" *ngIf="order$ | async as order">
+        <div class="order-success__detail">
+          <i class="fas fa-receipt"></i>
+          <div>
+            <span class="order-success__detail-label">Order Number</span>
+            <span class="order-success__detail-value"
+              >#{{ order.key?.slice(-6) }}</span
+            >
+          </div>
+        </div>
+        <div class="order-success__detail">
+          <i class="fas fa-calendar-check"></i>
+          <div>
+            <span class="order-success__detail-label">Date Placed</span>
+            <span class="order-success__detail-value">{{
+              order.datePlaced | date: "medium"
+            }}</span>
+          </div>
+        </div>
+        <div class="order-success__detail">
+          <i class="fas fa-box"></i>
+          <div>
+            <span class="order-success__detail-label">Total Items</span>
+            <span class="order-success__detail-value">{{
+              order.items.length
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shipping Info -->
+      <div class="order-success__shipping" *ngIf="order$ | async as order">
+        <h3 class="order-success__section-title">
+          <i class="fas fa-truck"></i>
+          Shipping Details
+        </h3>
+        <div class="order-success__shipping-info">
+          <p><i class="fas fa-user"></i> {{ order.shipping.name }}</p>
+          <p>
+            <i class="fas fa-map-marker-alt"></i> {{ order.shipping.address }}
+          </p>
+          <p><i class="fas fa-city"></i> {{ order.shipping.city }}</p>
+        </div>
+      </div>
+
+      <!-- Order Items Summary -->
+      <div class="order-success__items" *ngIf="order$ | async as order">
+        <h3 class="order-success__section-title">
+          <i class="fas fa-list"></i>
+          Order Summary
+        </h3>
+        <div class="order-success__item" *ngFor="let item of order.items">
+          <img
+            [src]="item.proudct.imageUrl"
+            [alt]="item.proudct.name"
+            class="order-success__item-image"
+          />
+          <div class="order-success__item-details">
+            <p class="order-success__item-name">{{ item.proudct.name }}</p>
+            <p class="order-success__item-meta">
+              {{ item.quantity }}x ·
+              {{ item.proudct.price | currency: "USD" : "symbol" }} each
+            </p>
+          </div>
+          <span class="order-success__item-price">{{
+            item.totalPrice | currency: "USD" : "symbol"
+          }}</span>
+        </div>
+
+        <div class="order-success__total">
+          <span>Total</span>
+          <span class="order-success__total-price">{{
+            getTotal(order) | currency: "USD" : "symbol"
+          }}</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="order-success__actions">
+        <a
+          routerLink="/my-orders"
+          class="order-success__btn order-success__btn--primary"
+        >
+          <i class="fas fa-shopping-bag"></i>
+          View My Orders
+        </a>
+        <a
+          routerLink="/products"
+          class="order-success__btn order-success__btn--secondary"
+        >
+          <i class="fas fa-shopping-cart"></i>
+          Continue Shopping
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
